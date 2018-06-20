@@ -58,10 +58,19 @@ void* thr_fn(void* arg)
         else
         {
             //执行定时器
+            clock_t startTime;
+            clock_t cloendTime;
+            startTime = clock();
+
             if (NULL != pTimerInfoList->Get_Curr_Timer())
             {
                 pTimerInfoList->Get_Curr_Timer()->Do_Timer_Event();
             }
+
+            cloendTime = clock();
+
+            //计算定时器执行时间
+            nTimeCost = ((double)(cloendTime - startTime) / CLOCKS_PER_SEC) * 1000;
         }
 
         pTimerInfoList->UnLock();

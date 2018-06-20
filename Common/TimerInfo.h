@@ -232,6 +232,7 @@ public:
         //计算出下一个需要运行的定时器最短到期时间
         int nInterval = 0;
         int nCurrCount = (int)m_TimerList.size();
+        m_emEventType = TIMER_DO_EVENT;
 
         for (int i = 0; i < nCurrCount; i++)
         {

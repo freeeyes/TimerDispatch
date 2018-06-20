@@ -12,7 +12,7 @@ public:
     virtual int Do_Timer_Event()
     {
         printf("[Do_Timer_Event]TimerID=%d, Frequency=%d.\n", Get_Timer_ID(), Get_Timer_Frequency());
-
+        Sleep(500);
         return 0;
     }
 };
@@ -23,7 +23,7 @@ int main()
 
     CTimer_Test test1;
 
-    test1.Set_Timer_Param(1, 10000);
+    test1.Set_Timer_Param(1, 1000);
 
     objTimerThread.Init();
 
