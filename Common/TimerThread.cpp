@@ -52,6 +52,7 @@ void* thr_fn(void* arg)
         else if (pTimerInfoList->Get_Event_Type() == TIMER_MODIFY)
         {
             //重新计算下一次唤醒时间
+            pTimerInfoList->UnLock();
             continue;
         }
         else
