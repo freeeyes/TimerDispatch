@@ -22,6 +22,13 @@ using namespace std;
 
 #define MAX_TIMER_LIST_COUNT 10
 
+enum EM_Event_Type
+{
+    TIMER_STOP = 0,      //停止线程
+    TIMER_MODIFY,        //有Timer变化了
+    TIMER_DO_EVENT,      //执行Timer
+};
+
 class ITimerInfo
 {
 public:
@@ -70,7 +77,7 @@ private:
 class CTimerInfoList
 {
 public:
-    CTimerInfoList() : m_nMaxCount(0), m_NextRunTimer(NULL), m_blRun(false) {};
+    CTimerInfoList() : m_nMaxCount(0), m_NextRunTimer(NULL), m_blRun(false), m_emEventType(TIMER_DO_EVENT) {};
     ~CTimerInfoList() {};
 
 #ifdef WIN32
@@ -80,6 +87,21 @@ public:
 #endif
     {
         return m_pMutex;
+    }
+
+    void Set_Event_Type(EM_Event_Type emEventType)
+    {
+        m_emEventType = emEventType;
+
+        if (emEventType == TIMER_STOP)
+        {
+            m_blRun = false;
+        }
+    }
+
+    EM_Event_Type Get_Event_Type()
+    {
+        return m_emEventType;
     }
 
 #ifdef WIN32
@@ -260,6 +282,7 @@ private:
     int                 m_nMaxCount;      //当前定时器对象最大容量
     ITimerInfo*         m_NextRunTimer;   //下一次要运行的定时器对象
     bool                m_blRun;          //是否运行
+    EM_Event_Type       m_emEventType;    //当前事件执行状态
 
 #ifdef WIN32
     DWORD               m_nThreadID;

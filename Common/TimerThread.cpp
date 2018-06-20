@@ -44,10 +44,15 @@ void* thr_fn(void* arg)
 
         pTimerInfoList->Lock();
 
-        if (pTimerInfoList->Get_Run() == false)
+        if (pTimerInfoList->Get_Event_Type() == TIMER_STOP)
         {
             //关闭当前线程
             printf("[thr_fn]<%d>sig Close.\n", pTimerInfoList->Get_Thread_ID());
+        }
+        else if (pTimerInfoList->Get_Event_Type() == TIMER_MODIFY)
+        {
+            //重新计算下一次唤醒时间
+            continue;
         }
         else
         {
@@ -85,16 +90,7 @@ void CTimerThread::Init()
 void CTimerThread::Close()
 {
     //发起唤醒线程操作
-    m_TimerInfoList.Set_Run(false);
-
-    if (NULL != m_TimerInfoList.Get_cond())
-    {
-#ifdef WIN32
-        WakeAllConditionVariable(m_TimerInfoList.Get_cond());
-#else
-        pthread_cond_signal(m_TimerInfoList.Get_cond());
-#endif
-    }
+    Modify(TIMER_STOP);
 }
 
 void CTimerThread::Run()
@@ -116,10 +112,28 @@ void CTimerThread::Run()
 
 bool CTimerThread::Add_Timer(ITimerInfo* pTimerInfo)
 {
-    return m_TimerInfoList.Add_Timer(pTimerInfo);
+    bool blRet = m_TimerInfoList.Add_Timer(pTimerInfo);
+    Modify(TIMER_MODIFY);
+    return blRet;
 }
 
 bool CTimerThread::Del_Timer(ITimerInfo* pTimerInfo)
 {
-    return m_TimerInfoList.Del_Timer(pTimerInfo->Get_Timer_ID());
+    bool blRet = m_TimerInfoList.Del_Timer(pTimerInfo->Get_Timer_ID());
+    Modify(TIMER_MODIFY);
+    return blRet;
+}
+
+void CTimerThread::Modify(EM_Event_Type emType)
+{
+    m_TimerInfoList.Set_Event_Type(emType);
+
+    if (NULL != m_TimerInfoList.Get_cond())
+    {
+#ifdef WIN32
+        WakeAllConditionVariable(m_TimerInfoList.Get_cond());
+#else
+        pthread_cond_signal(m_TimerInfoList.Get_cond());
+#endif
+    }
 }

@@ -20,6 +20,8 @@ public:
     bool Del_Timer(ITimerInfo* pTimerInfo);
 
 private:
+    void Modify(EM_Event_Type emType);
+
     CTimerInfoList   m_TimerInfoList;
 };
 

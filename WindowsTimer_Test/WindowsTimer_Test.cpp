@@ -31,9 +31,6 @@ int main()
 
     objTimerThread.Run();
 
-    Sleep(1000);
-    objTimerThread.Close();
-
     getchar();
     return 0;
 }
