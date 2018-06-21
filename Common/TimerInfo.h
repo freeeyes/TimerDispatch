@@ -204,6 +204,15 @@ public:
 
     bool Add_Timer(ITimerInfo* pTimerInfo)
     {
+        //首先寻找是否已经是内部的定时器了，如果是则直接返回true
+        for (vector<ITimerInfo*>::iterator it = m_TimerList.begin(); it != m_TimerList.end(); ++it)
+        {
+            if ((*it)->Get_Timer_ID() == pTimerInfo->Get_Timer_ID())
+            {
+                return true;
+            }
+        }
+
         if (m_TimerList.size() >= m_nMaxCount)
         {
             return false;
