@@ -9,11 +9,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 #else
-include <stdio.h>
-include <sys / time.h>
-include <unistd.h>
-include <pthread.h>
-include <errno.h>
+#include <stdio.h>
+#include <sys/time.h>
+#include <unistd.h>
+#include <pthread.h>  
+#include <errno.h>
 #endif
 #include "time.h"
 #include <vector>
@@ -37,7 +37,7 @@ public:
 
     void Set_Timer_Param(int nTimerID, int nFrequency)
     {
-        m_nTimerID   = m_nTimerID;
+        m_nTimerID   = nTimerID;
         m_nFrequency = nFrequency;
     }
 
@@ -77,7 +77,7 @@ private:
 class CTimerInfoList
 {
 public:
-    CTimerInfoList() : m_nMaxCount(0), m_NextRunTimer(NULL), m_blRun(false), m_emEventType(TIMER_DO_EVENT) {};
+    CTimerInfoList() : m_nMaxCount(0), m_NextRunTimer(NULL), m_blRun(false), m_emEventType(TIMER_DO_EVENT), m_pCond(NULL), m_pMutex(NULL) {};
     ~CTimerInfoList() {};
 
 #ifdef WIN32
@@ -107,7 +107,7 @@ public:
 #ifdef WIN32
     CONDITION_VARIABLE* Get_cond()
 #else
-    pthread_cond_t* Get_Cond()
+    pthread_cond_t* Get_cond()
 #endif
     {
         return m_pCond;

@@ -9,7 +9,7 @@ public:
     CTimerThread();
     ~CTimerThread();
 
-    void Init();
+    void Init(int nMaxCount = MAX_TIMER_LIST_COUNT);
 
     void Close();
 

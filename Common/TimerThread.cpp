@@ -70,7 +70,7 @@ void* thr_fn(void* arg)
             cloendTime = clock();
 
             //计算定时器执行时间
-            nTimeCost = ((double)(cloendTime - startTime) / CLOCKS_PER_SEC) * 1000;
+            nTimeCost = (int)((double)(cloendTime - startTime) / CLOCKS_PER_SEC) * 1000;
         }
 
         pTimerInfoList->UnLock();
@@ -90,11 +90,11 @@ CTimerThread::~CTimerThread()
     m_TimerInfoList.Close();
 }
 
-void CTimerThread::Init()
+void CTimerThread::Init(int nMaxCount)
 {
     Close();
 
-    m_TimerInfoList.Init();
+    m_TimerInfoList.Init(nMaxCount);
 }
 
 void CTimerThread::Close()
