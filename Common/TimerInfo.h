@@ -133,6 +133,7 @@ public:
 
     void Lock()
     {
+    	printf("[Lock]m_pMutex=0x%08x.\n", m_pMutex);
 #ifdef WIN32
         EnterCriticalSection(m_pMutex);
 #else
@@ -165,6 +166,7 @@ public:
 #else
         pthread_cond_init(m_pCond, NULL);
         pthread_mutex_init(m_pMutex, NULL);
+        printf("[Init]m_pMutex=0x%08x.\n", m_pMutex);
 #endif
 
         m_nMaxCount = nMaxCount;
