@@ -26,6 +26,8 @@ void* thr_fn(void* arg)
             nInterval -= nTimeCost;
         }
 
+        pTimerInfoList->Lock();
+
         if (nInterval > 0)
         {
 #ifdef WIN32
@@ -41,8 +43,6 @@ void* thr_fn(void* arg)
                                    &outtime);
 #endif
         }
-
-        pTimerInfoList->Lock();
 
         if (pTimerInfoList->Get_Event_Type() == TIMER_STOP)
         {
@@ -138,6 +138,8 @@ void CTimerThread::Modify(EM_Event_Type emType)
 {
     m_TimerInfoList.Set_Event_Type(emType);
 
+    m_TimerInfoList.Lock();
+
     if (NULL != m_TimerInfoList.Get_cond())
     {
 #ifdef WIN32
@@ -146,4 +148,6 @@ void CTimerThread::Modify(EM_Event_Type emType)
         pthread_cond_signal(m_TimerInfoList.Get_cond());
 #endif
     }
+
+    m_TimerInfoList.UnLock();
 }
