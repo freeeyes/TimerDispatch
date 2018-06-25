@@ -36,8 +36,19 @@ void* thr_fn(void* arg)
                                      nInterval);
 #else
             struct timespec outtime;
-            outtime.tv_sec = 0;
-            outtime.tv_nsec = nInterval * 1000 * 1000;  //单位是纳秒
+
+            struct timeval now;
+            struct timeval Interval;
+            struct timeval abstime;
+
+            Interval.tv_sec = (int)(nInterval / 1000);
+            Interval.tv_usec = (nInterval % 1000) * 1000;
+
+            gettimeofday(&now, NULL);
+            timeradd(&now, &Interval, &abstime);
+
+            outtime.tv_sec = abstime.tv_sec;
+            outtime.tv_nsec = abstime.tv_usec * 1000;  //单位是纳秒
             pthread_cond_timedwait(pTimerInfoList->Get_cond(),
                                    pTimerInfoList->Get_mutex(),
                                    &outtime);
@@ -100,7 +111,10 @@ void CTimerThread::Init(int nMaxCount)
 void CTimerThread::Close()
 {
     //发起唤醒线程操作
-    Modify(TIMER_STOP);
+    if (NULL != m_TimerInfoList.Get_mutex() && NULL != m_TimerInfoList.Get_cond())
+    {
+        Modify(TIMER_STOP);
+    }
 }
 
 void CTimerThread::Run()
