@@ -15,7 +15,7 @@ script:
   - make 
   - ls 
   - ./LinuxTimer_Test
-  - cd ../
+  - cd $TRAVIS_BUILD_DIR
   - sonar-scanner -X
   
 addons:
