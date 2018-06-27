@@ -26,13 +26,11 @@ int main()
 
     objTimerThread.Add_Timer(reinterpret_cast<ITimerInfo*>(&test1));
 
-    test1.Set_Timer_Param(1, 10000);
-
-    objTimerThread.Add_Timer(reinterpret_cast<ITimerInfo*>(&test1));
-
     objTimerThread.Run();
+	
+	sleep(10);
 
-    getchar();
+    //getchar();
     return 0;
 }
 

@@ -1,0 +1,21 @@
+language: cpp
+os:
+  - linux
+compiler:
+  - gcc
+branches:
+  only:
+  - master
+env:
+  global:
+    - COMPILER=g++-7
+
+before_install:
+
+addons:
+
+script:
+  - cd $TRAVIS_BUILD_DIR/TimerDispatch/LinuxTimer_Test
+  - make 
+  - ls 
+  - ./LinuxTimer_Test
