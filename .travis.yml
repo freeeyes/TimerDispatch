@@ -12,6 +12,7 @@ env:
 
 script:
   - cd $TRAVIS_BUILD_DIR/LinuxTimer_Test
+  - build-wrapper-linux-x86-64 --out-dir bw-output make -j 4
   - make 
   - ls 
   - ./LinuxTimer_Test
