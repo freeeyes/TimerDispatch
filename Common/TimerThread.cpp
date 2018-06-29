@@ -58,7 +58,7 @@ void* thr_fn(void* arg)
         if (pTimerInfoList->Get_Event_Type() == TIMER_STOP)
         {
             //关闭当前线程
-            printf("[thr_fn]<%d>sig Close.\n", pTimerInfoList->Get_Thread_ID());
+            printf("[thr_fn]<%d>sig Close.\n", (int)pTimerInfoList->Get_Thread_ID());
         }
         else if (pTimerInfoList->Get_Event_Type() == TIMER_MODIFY)
         {
