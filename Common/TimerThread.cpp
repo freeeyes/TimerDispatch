@@ -131,7 +131,7 @@ void CTimerThread::Run()
     m_TimerInfoList.Set_Thread_ID(nThreadID);
 #endif
 
-    printf("[CTimerThread::Run]<%d> is Run.\n", m_TimerInfoList.Get_Thread_ID());
+    printf("[CTimerThread::Run]<%d> is Run.\n", (int)m_TimerInfoList.Get_Thread_ID());
 }
 
 bool CTimerThread::Add_Timer(ITimerInfo* pTimerInfo)
