@@ -3,37 +3,51 @@
 
 #include "stdafx.h"
 #include "TimerThread.h"
+#include "TimerCommon.h"
 
-class CTimer_Test : public ITimerInfo
+int Do_Timer_Event(void* pArg)
 {
-public:
-    virtual ~CTimer_Test() {};
+    int* pData = (int*)pArg;
+    TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();
+    printf_s("[Do_Timer_Event]<%s>, Arg=%d.\n", obj_Time_Value.Get_string().c_str(), *pData);
+    Sleep(500);
 
-    virtual int Do_Timer_Event()
-    {
-        printf("[Do_Timer_Event]TimerID=%d, Frequency=%d.\n", Get_Timer_ID(), Get_Timer_Frequency());
-        Sleep(500);
-        return 0;
-    }
-};
+    return 0;
+}
 
 int main()
 {
-    CTimerThread objTimerThread;
+    TS_TIMER::CTimerThread objTimerThread;
 
-    CTimer_Test test1;
+    TS_TIMER::CTime_Value ttbegin;
 
-    test1.Set_Timer_Param(1, 1000);
+    int nID = 1;
 
     objTimerThread.Init();
 
-    objTimerThread.Add_Timer(reinterpret_cast<ITimerInfo*>(&test1));
+    objTimerThread.Add_Timer(1, 10000, ttbegin, Do_Timer_Event, (void*)&nID);
 
-    test1.Set_Timer_Param(1, 10000);
+    //test1.Set_Timer_Param(1, 10000);
 
-    objTimerThread.Add_Timer(reinterpret_cast<ITimerInfo*>(&test1));
+    //objTimerThread.Add_Timer(reinterpret_cast<TS_TIMER::ITimerInfo*>(&test1));
 
     objTimerThread.Run();
+
+    /*
+    TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();
+
+    printf_s("[obj_Time_Value]obj_Time_Value=<%s>.\n", obj_Time_Value.Get_string().c_str());
+
+    time_t ttSecond                  = 1;
+    TS_TIMER::suseconds_t ttuSeconds = 0;
+    TS_TIMER::CTime_Value obj_Time_1 = obj_Time_Value + TS_TIMER::CTime_Value(ttSecond, ttuSeconds);
+
+    printf_s("[obj_Time_Value]obj_Time_1=<%s>.\n", obj_Time_1.Get_string().c_str());
+
+    TS_TIMER::CTime_Value obj_Time_2 = obj_Time_1 - obj_Time_Value;
+
+    printf_s("[obj_Time_Value]obj_Time_2.Get_milliseconds=<%d>.\n", obj_Time_2.Get_milliseconds());
+    */
 
     getchar();
     return 0;

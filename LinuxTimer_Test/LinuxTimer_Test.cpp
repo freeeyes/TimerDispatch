@@ -1,36 +1,30 @@
 #include <unistd.h>
 #include "TimerThread.h"
 
-class CTimer_Test : public ITimerInfo
+int Do_Timer_Event(void* pArg)
 {
-public:
-    virtual ~CTimer_Test() {};
-
-    virtual int Do_Timer_Event()
-    {
-        printf("[Do_Timer_Event]TimerID=%d, Frequency=%d.\n", Get_Timer_ID(), Get_Timer_Frequency());
-        usleep(500*1000);
-        return 0;
-    }
-};
+    int* pData = (int*)pArg;
+    TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();
+    printf("[Do_Timer_Event]<%s>, Arg=%d.\n", obj_Time_Value.Get_string().c_str(), *pData);
+	usleep(500*1000);
+	return 0;
+}
 
 int main()
 {
-    CTimerThread objTimerThread;
+    TS_TIMER::CTimerThread objTimerThread;
 
-    CTimer_Test test1;
+    TS_TIMER::CTime_Value ttbegin;
 
-    test1.Set_Timer_Param(1, 1000);
+    int nID = 1;
 
     objTimerThread.Init();
 
-    objTimerThread.Add_Timer(reinterpret_cast<ITimerInfo*>(&test1));
+    objTimerThread.Add_Timer(1, 10000, ttbegin, Do_Timer_Event, (void*)&nID);
 
     objTimerThread.Run();
 	
-	sleep(10);
-
-    //getchar();
+    getchar();
     return 0;
 }
 

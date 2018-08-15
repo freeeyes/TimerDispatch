@@ -3,26 +3,29 @@
 
 #include "TimerInfo.h"
 
-class CTimerThread
+namespace TS_TIMER
 {
-public:
-    CTimerThread();
-    ~CTimerThread();
+    class CTimerThread
+    {
+    public:
+        CTimerThread();
+        ~CTimerThread();
 
-    void Init(int nMaxCount = MAX_TIMER_LIST_COUNT);
+        void Init(int nMaxCount = MAX_TIMER_LIST_COUNT);
 
-    void Close();
+        void Close();
 
-    void Run();
+        void Run();
 
-    bool Add_Timer(ITimerInfo* pTimerInfo);
+        bool Add_Timer(int nTimerID, int nFrequency, CTime_Value ttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext);
 
-    bool Del_Timer(ITimerInfo* pTimerInfo);
+        bool Del_Timer(int nTimerID);
 
-private:
-    void Modify(EM_Event_Type emType);
+    private:
+        void Modify(EM_Event_Type emType);
 
-    CTimerInfoList   m_TimerInfoList;
-};
+        CTimerInfoList   m_TimerInfoList;
+    };
+}
 
 #endif

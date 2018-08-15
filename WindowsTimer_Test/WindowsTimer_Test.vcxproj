@@ -153,15 +153,19 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Common\TimerCommon.h" />
     <ClInclude Include="..\Common\TimerInfo.h" />
     <ClInclude Include="..\Common\TimerThread.h" />
+    <ClInclude Include="..\Common\Time_Value.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Common\TimerInfo.cpp" />
     <ClCompile Include="..\Common\TimerThread.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="..\Common\Time_Value.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="WindowsTimer_Test.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
