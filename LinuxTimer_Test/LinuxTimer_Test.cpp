@@ -20,11 +20,12 @@ int main()
 
     objTimerThread.Init();
 
-    objTimerThread.Add_Timer(1, 10000, ttbegin, Do_Timer_Event, (void*)&nID);
+    objTimerThread.Add_Timer(1, 1000, ttbegin, Do_Timer_Event, (void*)&nID);
 
     objTimerThread.Run();
 	
-    getchar();
+    sleep(10);
+	//getchar();
     return 0;
 }
 
