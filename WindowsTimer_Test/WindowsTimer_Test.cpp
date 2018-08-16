@@ -47,7 +47,7 @@ int main()
     printf_s("[obj_Time_Value]obj_Time_2.Get_milliseconds=<%d>.\n", obj_Time_2.Get_milliseconds());
     */
 
-    getchar();
+    Sleep(10000);
     return 0;
 }
 

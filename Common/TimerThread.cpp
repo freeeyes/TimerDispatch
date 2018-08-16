@@ -37,11 +37,15 @@ namespace TS_TIMER
                 Interval.tv_sec = (int)(nInterval / 1000);
                 Interval.tv_usec = (nInterval % 1000) * 1000;
 
+
                 gettimeofday(&now, NULL);
                 timeradd(&now, &Interval, &abstime);
 
                 outtime.tv_sec = abstime.tv_sec;
                 outtime.tv_nsec = abstime.tv_usec * 1000;  //单位是纳秒
+
+                CTime_Value ttNow = GetTimeofDay();
+
                 pthread_cond_timedwait(pTimerInfoList->Get_cond(),
                                        pTimerInfoList->Get_mutex(),
                                        &outtime);
@@ -51,6 +55,9 @@ namespace TS_TIMER
             {
                 //定时器执行异常，需要调用错误的过程
             }
+
+            CTime_Value obj_1= TS_TIMER::GetTimeofDay();
+            printf("[ITimerInfo::Get_Next_Timer]<%s>\n", obj_1.Get_string().c_str());
 
             if (pTimerInfoList->Get_Event_Type() == TIMER_STOP)
             {
@@ -67,6 +74,7 @@ namespace TS_TIMER
             {
                 //执行定时器
                 CTime_Value obj_Begin = TS_TIMER::GetTimeofDay();
+                printf("[ITimerInfo::Get_Next_Timer]<%s>\n", obj_Begin.Get_string().c_str());
 
                 if (NULL != pTimerInfoList->Get_Curr_Timer())
                 {

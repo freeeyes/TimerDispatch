@@ -7,7 +7,6 @@ void Do_Timer_Event(int nTimerID, void* pArg, TS_TIMER::EM_Timer_State& emState)
     TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();
     printf("[Do_Timer_Event](%d)<%s>, Arg=%d.\n", nTimerID, obj_Time_Value.Get_string().c_str(), *pData);
 	usleep(500*1000);
-	return 0;
 }
 
 int main()

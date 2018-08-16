@@ -76,7 +76,7 @@ namespace TS_TIMER
                 nCurrFrequency = nIntervalFrquency;
             }
 
-            printf("ITimerInfo::Get_Next_Timer]<%s>nCurrFrequency=%d.\n", ttNow.Get_string().c_str(), nCurrFrequency);
+            printf("[ITimerInfo::Get_Next_Timer]<%s>nCurrFrequency=%d.\n", ttNow.Get_string().c_str(), nCurrFrequency);
             return nCurrFrequency;
         }
     }
