@@ -46,56 +46,34 @@ namespace TS_TIMER
         }
         else
         {
+            CTime_Value ttInterval;
+            int nSeconds = m_nFrequency / 1000;
+            int nUseconds = (m_nFrequency % 1000) * 1000;
+
             if (m_ttLastRunTime.IsZero() == true)
             {
                 //如果是第一次计算,看看有没有初始化时间参数
-                if (m_ttBeginTime.IsZero() == true)
-                {
-                    //需要立即执行
-                    m_ttLastRunTime = GetTimeofDay();
-                    return 0;
-                }
-                else
-                {
-                    //判断设定的开始时间是否已经到了
-                    CTime_Value ttInterval = ttNow - m_ttBeginTime;
-
-                    int nBeginFrquency = (int)ttInterval.Get_milliseconds() - nFunctionCost;
-
-                    if (nBeginFrquency <= 0)
-                    {
-                        //需要立即执行
-                        m_ttLastRunTime = GetTimeofDay();
-                        return 0;
-                    }
-                    else
-                    {
-                        //需要等待的绝对时间差
-                        nCurrFrequency = nBeginFrquency + m_nFrequency;
-                    }
-                }
+                m_ttLastRunTime = m_ttBeginTime + CTime_Value(nSeconds, nUseconds);
+                ttInterval = m_ttLastRunTime - ttNow;
             }
             else
             {
-                //判断和现在的时间差是多少
-                int nSeconds = m_nFrequency / 1000;
-                int nUseconds = (m_nFrequency % 1000) * 1000;
+                //如有上一次运行时间
                 CTime_Value ttNextRunTime = m_ttLastRunTime + CTime_Value(nSeconds, nUseconds);
-                CTime_Value ttInterval    = ttNextRunTime - ttNow;
+                ttInterval = ttNextRunTime - ttNow;
+            }
 
-                int nIntervalFrquency = ttInterval.Get_milliseconds() - nFunctionCost;
+            int nIntervalFrquency = ttInterval.Get_milliseconds() - nFunctionCost;
 
-                if (nIntervalFrquency <= 0)
-                {
-                    //需要立即执行
-                    m_ttLastRunTime = GetTimeofDay();
-                    return 0;
-                }
-                else
-                {
-                    //需要等待的绝对时间差
-                    nCurrFrequency = nIntervalFrquency;
-                }
+            if (nIntervalFrquency <= 0)
+            {
+                //需要立即执行
+                return 0;
+            }
+            else
+            {
+                //需要等待的绝对时间差
+                nCurrFrequency = nIntervalFrquency;
             }
 
             printf("ITimerInfo::Get_Next_Timer]<%s>nCurrFrequency=%d.\n", ttNow.Get_string().c_str(), nCurrFrequency);
@@ -264,7 +242,10 @@ namespace TS_TIMER
         {
             if ((*it)->Get_Timer_ID() == nTimerID)
             {
+                ITimerInfo* pTimerInfo = (ITimerInfo*)(*it);
                 it = m_TimerList.erase(it);
+                delete pTimerInfo;
+                pTimerInfo = NULL;
                 return true;
             }
         }

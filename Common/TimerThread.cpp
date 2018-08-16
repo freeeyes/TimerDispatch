@@ -47,6 +47,10 @@ namespace TS_TIMER
                                        &outtime);
 #endif
             }
+            else
+            {
+                //定时器执行异常，需要调用错误的过程
+            }
 
             if (pTimerInfoList->Get_Event_Type() == TIMER_STOP)
             {
@@ -136,6 +140,11 @@ namespace TS_TIMER
     {
         ITimerInfo* pTimerInfo = new ITimerInfo();
 
+        if (true == pttBegin->IsZero())
+        {
+            *pttBegin = GetTimeofDay();
+        }
+
         if (NULL != pttBegin)
         {
             //有开始时间
@@ -144,7 +153,7 @@ namespace TS_TIMER
         else
         {
             //从现在开始
-            CTime_Value ttBegin;
+            CTime_Value ttBegin = GetTimeofDay();
             pTimerInfo->Set_Timer_Param(nTimerID, nFrequency, ttBegin, fn_Timeout_Callback, pArgContext);
         }
 
