@@ -21,10 +21,23 @@
 
 using namespace std;
 
+//定时器相关对象声明
+//add by freeeyes
+
+
+
 namespace TS_TIMER
 {
+    enum EM_Timer_State
+    {
+        TIMER_STATE_OK = 0,    //定时器正常运行
+        TIMER_STATE_DEL,       //定时器删除
+    };
+
 #define MAX_TIMER_LIST_COUNT 10
-    typedef int(*Timeout_Callback)(void*);
+
+    typedef void(*Timeout_Callback)(int, void*, EM_Timer_State&);
+    typedef void(*Timeout_Error_Callback)(int, vector<CTime_Value>, void*);
 
     enum EM_Event_Type
     {
@@ -48,7 +61,7 @@ namespace TS_TIMER
         int Get_Next_Timer(int nFunctionCost);
 
         //这个需要具体类去实现的方法
-        int Do_Timer_Event();
+        EM_Timer_State Do_Timer_Event();
 
     private:
         int m_nTimerID;                           //当前唯一的Timer标识

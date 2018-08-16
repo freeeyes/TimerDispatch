@@ -103,15 +103,16 @@ namespace TS_TIMER
         }
     }
 
-    int ITimerInfo::Do_Timer_Event()
+    EM_Timer_State ITimerInfo::Do_Timer_Event()
     {
         //执行回调函数
-        m_fn_Timeout_Callback(m_pArgContext);
+        EM_Timer_State emState = TIMER_STATE_OK;
+        m_fn_Timeout_Callback(Get_Timer_ID(), m_pArgContext, emState);
 
         //设置最后执行时间
         m_ttLastRunTime = GetTimeofDay();
 
-        return 0;
+        return emState;
     }
 
     //定时器列表类

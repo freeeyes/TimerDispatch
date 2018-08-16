@@ -66,13 +66,19 @@ namespace TS_TIMER
 
                 if (NULL != pTimerInfoList->Get_Curr_Timer())
                 {
-                    pTimerInfoList->Get_Curr_Timer()->Do_Timer_Event();
+                    EM_Timer_State emstate = pTimerInfoList->Get_Curr_Timer()->Do_Timer_Event();
+
+                    if (TIMER_STATE_DEL == emstate)
+                    {
+                        //如果执行完需要清除定时器，在这里回收定时器
+                        pTimerInfoList->Del_Timer(pTimerInfoList->Get_Curr_Timer()->Get_Timer_ID());
+                    }
                 }
 
                 CTime_Value obj_End = TS_TIMER::GetTimeofDay();
                 CTime_Value obj_Interval = obj_End - obj_Begin;
 
-                //计算定时器执行时间
+                //计算定时任务执行时间
                 nTimeCost = obj_Interval.Get_milliseconds();
             }
 
@@ -126,10 +132,21 @@ namespace TS_TIMER
         printf("[CTimerThread::Run]<%s> is Run.\n", ttNow.Get_string().c_str());
     }
 
-    bool CTimerThread::Add_Timer(int nTimerID, int nFrequency, CTime_Value ttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext)
+    bool CTimerThread::Add_Timer(int nTimerID, int nFrequency, CTime_Value* pttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext)
     {
         ITimerInfo* pTimerInfo = new ITimerInfo();
-        pTimerInfo->Set_Timer_Param(nTimerID, nFrequency, ttBegin, fn_Timeout_Callback, pArgContext);
+
+        if (NULL != pttBegin)
+        {
+            //有开始时间
+            pTimerInfo->Set_Timer_Param(nTimerID, nFrequency, *pttBegin, fn_Timeout_Callback, pArgContext);
+        }
+        else
+        {
+            //从现在开始
+            CTime_Value ttBegin;
+            pTimerInfo->Set_Timer_Param(nTimerID, nFrequency, ttBegin, fn_Timeout_Callback, pArgContext);
+        }
 
         bool blRet = m_TimerInfoList.Add_Timer(pTimerInfo);
 
