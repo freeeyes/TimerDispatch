@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include "TimerThread.h"
 
-void Do_Timer_Event(int nTimerID, void* pArg, TS_TIMER::EM_Timer_State& emState)
+void Do_Timer_Event(int nTimerID, TS_TIMER::CTime_Value& tvNow, void* pArg, TS_TIMER::EM_Timer_State& emState)
 {
     int* pData = (int*)pArg;
     TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();

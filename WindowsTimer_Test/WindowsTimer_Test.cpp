@@ -5,12 +5,10 @@
 #include "TimerThread.h"
 #include "TimerCommon.h"
 
-void Do_Timer_Event(int nTimerID, void* pArg, TS_TIMER::EM_Timer_State& emState)
+void Do_Timer_Event(int nTimerID, TS_TIMER::CTime_Value& tvNow, void* pArg, TS_TIMER::EM_Timer_State& emState)
 {
     int* pData = (int*)pArg;
-    TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();
-    printf("sec=%d, usec=%d.\n", obj_Time_Value.Get_sec(), obj_Time_Value.Get_usec()/1000);
-    //printf_s("[Do_Timer_Event](%d)<%d>, Arg=%d.\n", nTimerID, obj_Time_Value.Get_usec(), *pData);
+    printf_s("[Do_Timer_Event](%d)<%s>, Arg=%d.\n", nTimerID, tvNow.Get_string().c_str(), *pData);
     //Sleep(50);
 }
 
@@ -43,11 +41,11 @@ int main()
 
     objTimerThread.Init();
 
-    objTimerThread.Add_Timer(1, 100, &ttbegin, Do_Timer_Event, (void*)&nID);
+    objTimerThread.Add_Timer(1, 1000, &ttbegin, Do_Timer_Event, (void*)&nID);
 
     objTimerThread.Run();
 
-    Sleep(1000);
+    Sleep(10000);
 
     return 0;
 }

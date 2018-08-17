@@ -14,14 +14,13 @@ namespace TS_TIMER
 
         int nTimeCost = 0;
 
+        CTime_Value obj_Now = TS_TIMER::GetTimeofDay();
+
         while (pTimerInfoList->Get_Run())
         {
             //得到定时器下一个执行对象的差距时间
-            int nInterval = pTimerInfoList->Get_Next_Timer(nTimeCost);
+            int nInterval = pTimerInfoList->Get_Next_Timer(obj_Now, nTimeCost);
 
-            TS_TIMER::CTime_Value obj_Time_1 = TS_TIMER::GetTimeofDay();
-
-            //printf("[ITimerInfo::Get_Next_Timer]nInterval=%d.\n", nInterval);
             pTimerInfoList->Lock();
 
             if (nInterval > 0)
@@ -59,9 +58,6 @@ namespace TS_TIMER
                 //定时器执行异常，需要调用错误的过程
             }
 
-            //TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();
-            //printf("[thr_fn]sec=%d, usec=%d.\n", obj_Time_Value.Get_sec(), obj_Time_Value.Get_usec() / 1000);
-
             if (pTimerInfoList->Get_Event_Type() == TIMER_STOP)
             {
                 //关闭当前线程
@@ -77,10 +73,11 @@ namespace TS_TIMER
             {
                 //执行定时器
                 CTime_Value obj_Begin = TS_TIMER::GetTimeofDay();
+                //printf("[thr_fn]sec=%d, usec=%d.\n", obj_Begin.Get_sec(), obj_Begin.Get_usec() / 1000);
 
                 if (NULL != pTimerInfoList->Get_Curr_Timer())
                 {
-                    EM_Timer_State emstate = pTimerInfoList->Get_Curr_Timer()->Do_Timer_Event();
+                    EM_Timer_State emstate = pTimerInfoList->Get_Curr_Timer()->Do_Timer_Event(obj_Begin);
 
                     if (TIMER_STATE_DEL == emstate)
                     {
@@ -89,8 +86,8 @@ namespace TS_TIMER
                     }
                 }
 
-                CTime_Value obj_End = TS_TIMER::GetTimeofDay();
-                CTime_Value obj_Interval = obj_End - obj_Begin;
+                obj_Now = TS_TIMER::GetTimeofDay();
+                CTime_Value obj_Interval = obj_Now - obj_Begin;
 
                 //计算定时任务执行时间
                 nTimeCost = obj_Interval.Get_milliseconds();

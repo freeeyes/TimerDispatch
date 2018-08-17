@@ -97,11 +97,11 @@ namespace TS_TIMER
         }
     }
 
-    EM_Timer_State ITimerInfo::Do_Timer_Event()
+    EM_Timer_State ITimerInfo::Do_Timer_Event(CTime_Value& obj_Now)
     {
         //执行回调函数
         EM_Timer_State emState = TIMER_STATE_OK;
-        m_fn_Timeout_Callback(Get_Timer_ID(), m_pArgContext, emState);
+        m_fn_Timeout_Callback(Get_Timer_ID(), obj_Now, m_pArgContext, emState);
 
         //设置最后执行时间
         m_ttLastRunTime = GetTimeofDay();
@@ -274,7 +274,7 @@ namespace TS_TIMER
         return false;
     }
 
-    int CTimerInfoList::Get_Next_Timer(int nFunctionCost)
+    int CTimerInfoList::Get_Next_Timer(CTime_Value& tvNow, int nFunctionCost)
     {
         //计算出下一个需要运行的定时器最短到期时间
         int nInterval = 0;
@@ -282,8 +282,6 @@ namespace TS_TIMER
         m_emEventType = TIMER_DO_EVENT;
 
         //这里要记录一下绝对时间
-        CTime_Value tvNow = GetTimeofDay();
-
         for (int i = 0; i < nCurrCount; i++)
         {
             if (i == 0)
@@ -314,17 +312,5 @@ namespace TS_TIMER
     ITimerInfo* CTimerInfoList::Get_Curr_Timer()
     {
         return m_NextRunTimer;
-    }
-
-    int CTimerInfoList::Run()
-    {
-        if (NULL != m_NextRunTimer)
-        {
-            return m_NextRunTimer->Do_Timer_Event();
-        }
-        else
-        {
-            return -1;
-        }
     }
 }

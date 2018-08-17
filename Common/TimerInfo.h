@@ -36,7 +36,7 @@ namespace TS_TIMER
 
 #define MAX_TIMER_LIST_COUNT 10
 
-    typedef void(*Timeout_Callback)(int, void*, EM_Timer_State&);
+    typedef void(*Timeout_Callback)(int, CTime_Value&, void*, EM_Timer_State&);
     typedef void(*Timeout_Error_Callback)(int, vector<CTime_Value>, void*);
 
     enum EM_Event_Type
@@ -60,7 +60,7 @@ namespace TS_TIMER
 
         int Get_Next_Timer(CTime_Value ttNow, int nFunctionCost);
 
-        EM_Timer_State Do_Timer_Event();
+        EM_Timer_State Do_Timer_Event(CTime_Value& obj_Now);
 
         void SetLastRunTime();
 
@@ -125,11 +125,9 @@ namespace TS_TIMER
 
         bool Del_Timer(int nTimerID);
 
-        int Get_Next_Timer(int nFunctionCost);
+        int Get_Next_Timer(CTime_Value& tvNow, int nFunctionCost);
 
         ITimerInfo* Get_Curr_Timer();
-
-        int Run();
 
     private:
         vector<ITimerInfo*> m_TimerList;      //当前定时器对象列表
