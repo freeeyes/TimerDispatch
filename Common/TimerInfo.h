@@ -62,13 +62,12 @@ namespace TS_TIMER
 
         EM_Timer_State Do_Timer_Event(CTime_Value& obj_Now);
 
-        void SetLastRunTime();
-
     private:
         int m_nTimerID;                           //当前唯一的Timer标识
         int m_nFrequency;                         //当前的操作频度(单位是毫秒)
         CTime_Value m_ttBeginTime;                //开始定时器的时间
         CTime_Value m_ttLastRunTime;              //上一次成功运行定时器的时间
+        CTime_Value m_ttNextTime;                 //下一次运行的时间
 
         Timeout_Callback m_fn_Timeout_Callback;   //回调函数
         void*            m_pArgContext;           //回调函数上下文

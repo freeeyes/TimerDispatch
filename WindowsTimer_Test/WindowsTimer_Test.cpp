@@ -9,7 +9,7 @@ void Do_Timer_Event(int nTimerID, TS_TIMER::CTime_Value& tvNow, void* pArg, TS_T
 {
     int* pData = (int*)pArg;
     printf_s("[Do_Timer_Event](%d)<%s>, Arg=%d.\n", nTimerID, tvNow.Get_string().c_str(), *pData);
-    //Sleep(50);
+    Sleep(500);
 }
 
 

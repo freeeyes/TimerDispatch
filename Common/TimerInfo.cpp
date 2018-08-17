@@ -52,17 +52,18 @@ namespace TS_TIMER
             if (m_ttLastRunTime.IsZero() == true)
             {
                 //如果是第一次计算,看看有没有初始化时间参数
-                m_ttLastRunTime = m_ttBeginTime + CTime_Value(nSeconds, nUseconds);
-                ttInterval = m_ttLastRunTime - ttNow;
+                m_ttNextTime = m_ttBeginTime + CTime_Value(nSeconds, nUseconds);
+                ttInterval = m_ttNextTime - m_ttBeginTime;
             }
             else
             {
                 //如有上一次运行时间
-                CTime_Value ttNextRunTime = m_ttLastRunTime + CTime_Value(nSeconds, nUseconds);
-                ttInterval = ttNextRunTime - ttNow;
+                m_ttNextTime = m_ttNextTime + CTime_Value(nSeconds, nUseconds);
+                ttInterval = m_ttNextTime - m_ttLastRunTime;
             }
 
-            int nIntervalFrquency = ttInterval.Get_milliseconds() - nFunctionCost;
+            int nIntervalFrquency = ttInterval.Get_milliseconds();
+            //printf("[ITimerInfo::Get_Next_Timer]ttInterval.Get_milliseconds()=%d, nFunctionCost=%d.\n", ttInterval.Get_milliseconds(), nFunctionCost);
 
             if (nIntervalFrquency <= 0)
             {
@@ -79,16 +80,16 @@ namespace TS_TIMER
             int nBeginmsec = m_ttBeginTime.Get_usec() / 1000;
             int nErrormsrc = 0;
 
-            if ((ttNow.Get_usec() / 1000) > nBeginmsec)
+            if ((m_ttNextTime.Get_usec() / 1000) > nBeginmsec)
             {
-                nErrormsrc = ((ttNow.Get_usec() / 1000) - nBeginmsec) % m_nFrequency;
+                nErrormsrc = ((m_ttNextTime.Get_usec() / 1000) - nBeginmsec) % m_nFrequency;
             }
             else
             {
-                nErrormsrc = ((ttNow.Get_usec() / 1000) + 1000 - nBeginmsec) % m_nFrequency;
+                nErrormsrc = (nBeginmsec - (m_ttNextTime.Get_usec() / 1000)) % m_nFrequency;
             }
 
-            //printf("[ITimerInfo::Get_Next_Timer]nBeginmsec=%d,nCurrmsrc=%d.\n", nBeginmsec, ttNow.Get_usec() / 1000);
+            //printf("[ITimerInfo::Get_Next_Timer]nBeginmsec=%d,nCurrmsrc=%d.\n", nBeginmsec, m_ttNextTime.Get_usec() / 1000);
             //printf("[ITimerInfo::Get_Next_Timer]nCurrFrequency=%d,nErrormsrc=%d.\n", nCurrFrequency, nErrormsrc);
 
             nCurrFrequency -= nErrormsrc;
@@ -107,11 +108,6 @@ namespace TS_TIMER
         m_ttLastRunTime = GetTimeofDay();
 
         return emState;
-    }
-
-    void ITimerInfo::SetLastRunTime()
-    {
-        m_ttLastRunTime = GetTimeofDay();
     }
 
     //定时器列表类
