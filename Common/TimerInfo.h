@@ -58,10 +58,11 @@ namespace TS_TIMER
 
         int Get_Timer_Frequency();
 
-        int Get_Next_Timer(int nFunctionCost);
+        int Get_Next_Timer(CTime_Value ttNow, int nFunctionCost);
 
-        //这个需要具体类去实现的方法
         EM_Timer_State Do_Timer_Event();
+
+        void SetLastRunTime();
 
     private:
         int m_nTimerID;                           //当前唯一的Timer标识

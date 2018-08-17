@@ -19,6 +19,9 @@ namespace TS_TIMER
             //得到定时器下一个执行对象的差距时间
             int nInterval = pTimerInfoList->Get_Next_Timer(nTimeCost);
 
+            TS_TIMER::CTime_Value obj_Time_1 = TS_TIMER::GetTimeofDay();
+
+            //printf("[ITimerInfo::Get_Next_Timer]nInterval=%d.\n", nInterval);
             pTimerInfoList->Lock();
 
             if (nInterval > 0)
@@ -56,8 +59,8 @@ namespace TS_TIMER
                 //定时器执行异常，需要调用错误的过程
             }
 
-            CTime_Value obj_1= TS_TIMER::GetTimeofDay();
-            printf("[ITimerInfo::Get_Next_Timer]<%s>\n", obj_1.Get_string().c_str());
+            //TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();
+            //printf("[thr_fn]sec=%d, usec=%d.\n", obj_Time_Value.Get_sec(), obj_Time_Value.Get_usec() / 1000);
 
             if (pTimerInfoList->Get_Event_Type() == TIMER_STOP)
             {
@@ -74,7 +77,6 @@ namespace TS_TIMER
             {
                 //执行定时器
                 CTime_Value obj_Begin = TS_TIMER::GetTimeofDay();
-                printf("[ITimerInfo::Get_Next_Timer]<%s>\n", obj_Begin.Get_string().c_str());
 
                 if (NULL != pTimerInfoList->Get_Curr_Timer())
                 {

@@ -18,16 +18,17 @@ namespace TS_TIMER
         CTime_Value obj_Time_Value;
 
 #ifdef WIN32
+
         FILETIME   tfile;
         ::GetSystemTimeAsFileTime(&tfile);
+
+        ULARGE_INTEGER _100ns;
+        _100ns.LowPart = tfile.dwLowDateTime;
+        _100ns.HighPart = tfile.dwHighDateTime;
 
         ULARGE_INTEGER epoch; // UNIX epoch (1970-01-01 00:00:00) expressed in Windows NT FILETIME
         epoch.LowPart  = 0xD53E8000;
         epoch.HighPart = 0x019DB1DE;
-
-        ULARGE_INTEGER _100ns;
-        _100ns.LowPart  = tfile.dwLowDateTime;
-        _100ns.HighPart = tfile.dwHighDateTime;
 
         _100ns.QuadPart -= epoch.QuadPart;
 

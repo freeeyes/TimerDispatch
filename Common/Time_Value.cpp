@@ -53,7 +53,7 @@ namespace TS_TIMER
 
     std::string CTime_Value::Get_string()
     {
-        char szData[50] = { '\0' };
+        char szData[100] = { '\0' };
 
         struct tm tmDate;
 #ifdef WIN32
@@ -75,7 +75,6 @@ namespace TS_TIMER
                 tmDate.tm_sec,
                 (int)(m_tv_usec / 1000));
 #endif
-
 
         return (string)szData;
     }

@@ -34,10 +34,9 @@ namespace TS_TIMER
         return m_nFrequency;
     }
 
-    int ITimerInfo::Get_Next_Timer(int nFunctionCost)
+    int ITimerInfo::Get_Next_Timer(CTime_Value ttNow, int nFunctionCost)
     {
         int nCurrFrequency = 0;
-        CTime_Value ttNow  = GetTimeofDay();
 
         //这里计算出当前时间到下一次执行时间之间的间隔。
         if (m_nFrequency <= 0)
@@ -76,7 +75,24 @@ namespace TS_TIMER
                 nCurrFrequency = nIntervalFrquency;
             }
 
-            printf("[ITimerInfo::Get_Next_Timer]<%s>nCurrFrequency=%d.\n", ttNow.Get_string().c_str(), nCurrFrequency);
+            //在这里纠偏，得到当前时间毫秒值和开始时间毫秒值取余。
+            int nBeginmsec = m_ttBeginTime.Get_usec() / 1000;
+            int nErrormsrc = 0;
+
+            if ((ttNow.Get_usec() / 1000) > nBeginmsec)
+            {
+                nErrormsrc = ((ttNow.Get_usec() / 1000) - nBeginmsec) % m_nFrequency;
+            }
+            else
+            {
+                nErrormsrc = ((ttNow.Get_usec() / 1000) + 1000 - nBeginmsec) % m_nFrequency;
+            }
+
+            //printf("[ITimerInfo::Get_Next_Timer]nBeginmsec=%d,nCurrmsrc=%d.\n", nBeginmsec, ttNow.Get_usec() / 1000);
+            //printf("[ITimerInfo::Get_Next_Timer]nCurrFrequency=%d,nErrormsrc=%d.\n", nCurrFrequency, nErrormsrc);
+
+            nCurrFrequency -= nErrormsrc;
+
             return nCurrFrequency;
         }
     }
@@ -91,6 +107,11 @@ namespace TS_TIMER
         m_ttLastRunTime = GetTimeofDay();
 
         return emState;
+    }
+
+    void ITimerInfo::SetLastRunTime()
+    {
+        m_ttLastRunTime = GetTimeofDay();
     }
 
     //定时器列表类
@@ -267,12 +288,12 @@ namespace TS_TIMER
         {
             if (i == 0)
             {
-                nInterval = m_TimerList[i]->Get_Next_Timer(nFunctionCost);
+                nInterval = m_TimerList[i]->Get_Next_Timer(tvNow, nFunctionCost);
                 m_NextRunTimer = m_TimerList[i];
             }
             else
             {
-                int nCurrInterval = m_TimerList[i]->Get_Next_Timer(nFunctionCost);
+                int nCurrInterval = m_TimerList[i]->Get_Next_Timer(tvNow, nFunctionCost);
 
                 if (nCurrInterval < nInterval)
                 {
