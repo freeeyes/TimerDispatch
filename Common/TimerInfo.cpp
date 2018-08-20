@@ -8,6 +8,8 @@ namespace TS_TIMER
         //初始化时间
         m_ttBeginTime.Set_time(0, 0);
         m_ttLastRunTime.Set_time(0, 0);
+        m_fn_Timeout_Error    = NULL;
+        m_fn_Timeout_Callback = NULL;
     }
 
     ITimerInfo::~ITimerInfo()
@@ -15,13 +17,14 @@ namespace TS_TIMER
 
     }
 
-    void ITimerInfo::Set_Timer_Param(int nTimerID, int nFrequency, CTime_Value ttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext)
+    void ITimerInfo::Set_Timer_Param(int nTimerID, int nFrequency, CTime_Value ttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext, Timeout_Error_Callback fn_Timeout_Error_Callback)
     {
         m_nTimerID            = nTimerID;
         m_nFrequency          = nFrequency;
         m_ttBeginTime         = ttBegin;
         m_fn_Timeout_Callback = fn_Timeout_Callback;
         m_pArgContext         = pArgContext;
+        m_fn_Timeout_Error    = fn_Timeout_Error_Callback;
     }
 
     int ITimerInfo::Get_Timer_ID()
@@ -62,8 +65,13 @@ namespace TS_TIMER
                 ttInterval = m_ttNextTime - m_ttLastRunTime;
             }
 
+            //如果下一次运行时间小于当前时间
+            if (m_ttNextTime.Get_milliseconds() < ttNow.Get_milliseconds())
+            {
+                return -1;
+            }
+
             int nIntervalFrquency = ttInterval.Get_milliseconds();
-            //printf("[ITimerInfo::Get_Next_Timer]ttInterval.Get_milliseconds()=%d, nFunctionCost=%d.\n", ttInterval.Get_milliseconds(), nFunctionCost);
 
             if (nIntervalFrquency <= 0)
             {
@@ -98,6 +106,18 @@ namespace TS_TIMER
         }
     }
 
+    void ITimerInfo::Set_Next_Time(CTime_Value ttNextTime)
+    {
+        m_ttNextTime = ttNextTime;
+    }
+
+
+
+    CTime_Value ITimerInfo::Get_Next_Time()
+    {
+        return m_ttNextTime;
+    }
+
     EM_Timer_State ITimerInfo::Do_Timer_Event(CTime_Value& obj_Now)
     {
         //执行回调函数
@@ -108,6 +128,17 @@ namespace TS_TIMER
         m_ttLastRunTime = GetTimeofDay();
 
         return emState;
+    }
+
+    void ITimerInfo::Do_Error_Events(CTime_Value& obj_Next, vector<CTime_Value>& vecTimoutList)
+    {
+        if (NULL != m_fn_Timeout_Error)
+        {
+            m_fn_Timeout_Error(Get_Timer_ID(), vecTimoutList, m_pArgContext);
+        }
+
+        //设置下一次执行时间
+        Set_Next_Time(obj_Next);
     }
 
     //定时器列表类

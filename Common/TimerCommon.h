@@ -13,6 +13,8 @@
 
 namespace TS_TIMER
 {
+#define MAX_TIMOUTLIST_COUNT 100
+
     inline CTime_Value GetTimeofDay()
     {
         CTime_Value obj_Time_Value;
@@ -48,6 +50,38 @@ namespace TS_TIMER
         obj_Time_Value.Set_time(tv_sec, tv_usec);
 #endif
         return obj_Time_Value;
+    }
+
+    //获得超时时间列表
+    inline void Get_Timout_TimeInfo(CTime_Value& ttBegin, int nFrequency, CTime_Value& ttNow, vector<CTime_Value>& vecTimoutList)
+    {
+        int nSeconds  = nFrequency / 1000;
+        int nUseconds = (nFrequency % 1000) * 1000;
+
+        //超过最大次数就退出循环，保持效率。
+        int nCurrCount = 0;
+
+        while (true)
+        {
+            if (nCurrCount >= MAX_TIMOUTLIST_COUNT)
+            {
+                //如果超过最大循环次数，退出
+                return;
+            }
+
+            if (ttBegin.Get_milliseconds() > ttNow.Get_milliseconds())
+            {
+                return;
+            }
+            else
+            {
+                //计算下次到达时间
+                vecTimoutList.push_back(ttBegin);
+                ttBegin = ttBegin + CTime_Value(nSeconds, nUseconds);
+            }
+
+            nCurrCount++;
+        }
     }
 };
 

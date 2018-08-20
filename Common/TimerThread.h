@@ -17,7 +17,7 @@ namespace TS_TIMER
 
         void Run();
 
-        bool Add_Timer(int nTimerID, int nFrequency, CTime_Value* pttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext);
+        bool Add_Timer(int nTimerID, int nFrequency, CTime_Value* pttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext, Timeout_Error_Callback fn_Timeout_Error_Callback);
 
         bool Del_Timer(int nTimerID);
 

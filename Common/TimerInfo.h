@@ -52,7 +52,7 @@ namespace TS_TIMER
         ITimerInfo();
         virtual ~ITimerInfo();
 
-        void Set_Timer_Param(int nTimerID, int nFrequency, CTime_Value ttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext);
+        void Set_Timer_Param(int nTimerID, int nFrequency, CTime_Value ttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext, Timeout_Error_Callback fn_Timeout_Error_Callback);
 
         int Get_Timer_ID();
 
@@ -60,17 +60,24 @@ namespace TS_TIMER
 
         int Get_Next_Timer(CTime_Value ttNow, int nFunctionCost);
 
+        void Set_Next_Time(CTime_Value ttNextTime);
+
+        CTime_Value Get_Next_Time();
+
         EM_Timer_State Do_Timer_Event(CTime_Value& obj_Now);
 
-    private:
-        int m_nTimerID;                           //当前唯一的Timer标识
-        int m_nFrequency;                         //当前的操作频度(单位是毫秒)
-        CTime_Value m_ttBeginTime;                //开始定时器的时间
-        CTime_Value m_ttLastRunTime;              //上一次成功运行定时器的时间
-        CTime_Value m_ttNextTime;                 //下一次运行的时间
+        void Do_Error_Events(CTime_Value& obj_Next, vector<CTime_Value>& vecTimoutList);
 
-        Timeout_Callback m_fn_Timeout_Callback;   //回调函数
-        void*            m_pArgContext;           //回调函数上下文
+    private:
+        int m_nTimerID;                                  //当前唯一的Timer标识
+        int m_nFrequency;                                //当前的操作频度(单位是毫秒)
+        CTime_Value m_ttBeginTime;                       //开始定时器的时间
+        CTime_Value m_ttLastRunTime;                     //上一次成功运行定时器的时间
+        CTime_Value m_ttNextTime;                        //下一次运行的时间
+
+        Timeout_Callback       m_fn_Timeout_Callback;    //回调函数
+        Timeout_Error_Callback m_fn_Timeout_Error;       //回调定时器执行超时函数
+        void*                  m_pArgContext;            //回调函数上下文
     };
 
     //定时事件列表
