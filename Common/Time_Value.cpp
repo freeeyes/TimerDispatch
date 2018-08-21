@@ -55,26 +55,42 @@ namespace TS_TIMER
     {
         char szData[100] = { '\0' };
 
-        struct tm tmDate;
+        if (true == IsZero())
+        {
 #ifdef WIN32
-        localtime_s(&tmDate, &m_tv_sec);
-        sprintf_s(szData, 50, "%04d-%02d-%02d %02d:%02d:%02d %03d", tmDate.tm_year + 1900,
-                  tmDate.tm_mon + 1,
-                  tmDate.tm_mday,
-                  tmDate.tm_hour,
-                  tmDate.tm_min,
-                  tmDate.tm_sec,
-                  (int)(m_tv_usec / 1000));
+            sprintf_s(szData, 50, "1970-01-01 00:00:00");
 #else
-        localtime_r(&m_tv_sec, &tmDate);
-        sprintf(szData, "%04d-%02d-%02d %02d:%02d:%02d %03d", tmDate.tm_year + 1900,
-                tmDate.tm_mon + 1,
-                tmDate.tm_mday,
-                tmDate.tm_hour,
-                tmDate.tm_min,
-                tmDate.tm_sec,
-                (int)(m_tv_usec / 1000));
+            sprintf(szData, "1970-01-01 00:00:00");
 #endif
+        }
+        else
+        {
+            struct tm tmDate;
+
+#ifdef WIN32
+            localtime_s(&tmDate, &m_tv_sec);
+
+            sprintf_s(szData, 50, "%04d-%02d-%02d %02d:%02d:%02d %03d", tmDate.tm_year + 1900,
+                      tmDate.tm_mon + 1,
+                      tmDate.tm_mday,
+                      tmDate.tm_hour,
+                      tmDate.tm_min,
+                      tmDate.tm_sec,
+                      (int)(m_tv_usec / 1000));
+
+#else
+            localtime_r(&m_tv_sec, &tmDate);
+
+            sprintf(szData, "%04d-%02d-%02d %02d:%02d:%02d %03d", tmDate.tm_year + 1900,
+                    tmDate.tm_mon + 1,
+                    tmDate.tm_mday,
+                    tmDate.tm_hour,
+                    tmDate.tm_min,
+                    tmDate.tm_sec,
+                    (int)(m_tv_usec / 1000));
+
+#endif
+        }
 
         return (string)szData;
     }

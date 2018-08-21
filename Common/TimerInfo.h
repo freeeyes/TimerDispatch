@@ -58,7 +58,9 @@ namespace TS_TIMER
 
         int Get_Timer_Frequency();
 
-        int Get_Next_Timer(CTime_Value ttNow, int nFunctionCost);
+        int Get_Next_Timer(CTime_Value ttNow);
+
+        void Set_Next_Timer();
 
         void Set_Next_Time(CTime_Value ttNextTime);
 

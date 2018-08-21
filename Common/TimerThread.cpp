@@ -164,11 +164,6 @@ namespace TS_TIMER
     {
         ITimerInfo* pTimerInfo = new ITimerInfo();
 
-        if (true == pttBegin->IsZero())
-        {
-            *pttBegin = GetTimeofDay();
-        }
-
         if (NULL != pttBegin)
         {
             //有开始时间

@@ -37,81 +37,51 @@ namespace TS_TIMER
         return m_nFrequency;
     }
 
-    int ITimerInfo::Get_Next_Timer(CTime_Value ttNow, int nFunctionCost)
+    int ITimerInfo::Get_Next_Timer(CTime_Value ttNow)
     {
+        CTime_Value ttInterval;
         int nCurrFrequency = 0;
 
-        //这里计算出当前时间到下一次执行时间之间的间隔。
-        if (m_nFrequency <= 0)
+        if (m_ttLastRunTime.IsZero() == true && m_ttNextTime.IsZero() == true)
         {
-            return -1;
+            int nSeconds = m_nFrequency / 1000;
+            int nUseconds = (m_nFrequency % 1000) * 1000;
+            //如果是第一次计算,看看有没有初始化时间参数
+            m_ttNextTime = m_ttBeginTime + CTime_Value(nSeconds, nUseconds);
+        }
+
+        //如果下一次运行时间小于当前时间
+        if (m_ttNextTime.Get_milliseconds() > ttNow.Get_milliseconds())
+        {
+            ttInterval = m_ttNextTime - ttNow;
+            int nIntervalFrquency = ttInterval.Get_milliseconds();
+            //printf("[Get_Next_Timer]ID=%d, m_ttNextTime=<%s>,ttNow=<%s>.\n",
+            //       Get_Timer_ID(),
+            //       m_ttNextTime.Get_string().c_str(),
+            //       ttNow.Get_string().c_str());
+            return nIntervalFrquency;
         }
         else
         {
-            CTime_Value ttInterval;
-            int nSeconds = m_nFrequency / 1000;
-            int nUseconds = (m_nFrequency % 1000) * 1000;
-
-            if (m_ttLastRunTime.IsZero() == true)
-            {
-                //如果是第一次计算,看看有没有初始化时间参数
-                m_ttNextTime = m_ttBeginTime + CTime_Value(nSeconds, nUseconds);
-                ttInterval = m_ttNextTime - m_ttBeginTime;
-            }
-            else
-            {
-                //如有上一次运行时间
-                m_ttNextTime = m_ttNextTime + CTime_Value(nSeconds, nUseconds);
-                ttInterval = m_ttNextTime - m_ttLastRunTime;
-            }
-
-            //如果下一次运行时间小于当前时间
-            if (m_ttNextTime.Get_milliseconds() < ttNow.Get_milliseconds())
-            {
-                return -1;
-            }
-
-            int nIntervalFrquency = ttInterval.Get_milliseconds();
-
-            if (nIntervalFrquency <= 0)
-            {
-                //需要立即执行
-                return 0;
-            }
-            else
-            {
-                //需要等待的绝对时间差
-                nCurrFrequency = nIntervalFrquency;
-            }
-
-            //在这里纠偏，得到当前时间毫秒值和开始时间毫秒值取余。
-            int nBeginmsec = m_ttBeginTime.Get_usec() / 1000;
-            int nErrormsrc = 0;
-
-            if ((m_ttNextTime.Get_usec() / 1000) > nBeginmsec)
-            {
-                nErrormsrc = ((m_ttNextTime.Get_usec() / 1000) - nBeginmsec) % m_nFrequency;
-            }
-            else
-            {
-                nErrormsrc = (nBeginmsec - (m_ttNextTime.Get_usec() / 1000)) % m_nFrequency;
-            }
-
-            //printf("[ITimerInfo::Get_Next_Timer]nBeginmsec=%d,nCurrmsrc=%d.\n", nBeginmsec, m_ttNextTime.Get_usec() / 1000);
-            //printf("[ITimerInfo::Get_Next_Timer]nCurrFrequency=%d,nErrormsrc=%d.\n", nCurrFrequency, nErrormsrc);
-
-            nCurrFrequency -= nErrormsrc;
-
-            return nCurrFrequency;
+            return -1;
         }
+    }
+
+    void ITimerInfo::Set_Next_Timer()
+    {
+        int nSeconds = m_nFrequency / 1000;
+        int nUseconds = (m_nFrequency % 1000) * 1000;
+
+        //如有上一次运行时间
+        m_ttNextTime = m_ttNextTime + CTime_Value(nSeconds, nUseconds);
+
+        //printf("[Set_Next_Timer]ID=%d,m_ttNextTime=<%s>.\n", Get_Timer_ID(), m_ttNextTime.Get_string().c_str());
     }
 
     void ITimerInfo::Set_Next_Time(CTime_Value ttNextTime)
     {
         m_ttNextTime = ttNextTime;
     }
-
-
 
     CTime_Value ITimerInfo::Get_Next_Time()
     {
@@ -120,12 +90,16 @@ namespace TS_TIMER
 
     EM_Timer_State ITimerInfo::Do_Timer_Event(CTime_Value& obj_Now)
     {
+        //设置最后执行时间
+        m_ttLastRunTime = obj_Now;
+
         //执行回调函数
         EM_Timer_State emState = TIMER_STATE_OK;
         m_fn_Timeout_Callback(Get_Timer_ID(), obj_Now, m_pArgContext, emState);
 
-        //设置最后执行时间
-        m_ttLastRunTime = GetTimeofDay();
+
+        //设置下次运行时间
+        Set_Next_Timer();
 
         return emState;
     }
@@ -313,12 +287,12 @@ namespace TS_TIMER
         {
             if (i == 0)
             {
-                nInterval = m_TimerList[i]->Get_Next_Timer(tvNow, nFunctionCost);
+                nInterval = m_TimerList[i]->Get_Next_Timer(tvNow);
                 m_NextRunTimer = m_TimerList[i];
             }
             else
             {
-                int nCurrInterval = m_TimerList[i]->Get_Next_Timer(tvNow, nFunctionCost);
+                int nCurrInterval = m_TimerList[i]->Get_Next_Timer(tvNow);
 
                 if (nCurrInterval < nInterval)
                 {
@@ -333,6 +307,7 @@ namespace TS_TIMER
             }
         }
 
+        //printf("[CTimerInfoList::Get_Next_Timer]Get_Timer_ID=%d, nInterval=%d.\n", m_NextRunTimer->Get_Timer_ID(), nInterval);
         return nInterval;
     }
 
