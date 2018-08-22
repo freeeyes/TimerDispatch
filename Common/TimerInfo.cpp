@@ -104,11 +104,11 @@ namespace TS_TIMER
         return emState;
     }
 
-    void ITimerInfo::Do_Error_Events(CTime_Value& obj_Next, vector<CTime_Value>& vecTimoutList)
+    void ITimerInfo::Do_Error_Events(int nLastRunTimerID, CTime_Value& obj_Next, vector<CTime_Value>& vecTimoutList)
     {
         if (NULL != m_fn_Timeout_Error)
         {
-            m_fn_Timeout_Error(Get_Timer_ID(), vecTimoutList, m_pArgContext);
+            m_fn_Timeout_Error(nLastRunTimerID, Get_Timer_ID(), vecTimoutList, m_pArgContext);
         }
 
         //设置下一次执行时间

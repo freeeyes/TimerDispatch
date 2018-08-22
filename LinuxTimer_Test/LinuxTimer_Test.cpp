@@ -9,11 +9,11 @@ void Do_Timer_Event(int nTimerID, TS_TIMER::CTime_Value& tvNow, void* pArg, TS_T
 	usleep(500*1000);
 }
 
-void Timeout_Error_Callback(int nTimerID, vector<TS_TIMER::CTime_Value> vecTimeout, void* pArg)
+void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, vector<TS_TIMER::CTime_Value> vecTimeout, void* pArg)
 {
     int* pData = (int*)pArg;
     int nCount = (int)vecTimeout.size();
-    printf("[Timeout_Error_Callback](%d)<%d>, Arg=%d.\n", nTimerID, nCount, *pData);
+    printf("[Timeout_Error_Callback](nErrorTimerID=%d,nTimerID=%d)<%d>, Arg=%d.\n", nErrorTimerID, nTimerID, nCount, *pData);
 }
 
 int main()

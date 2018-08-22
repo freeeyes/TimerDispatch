@@ -12,7 +12,9 @@ namespace TS_TIMER
         //得到定时器列表参数
         CTimerInfoList* pTimerInfoList = reinterpret_cast<CTimerInfoList*>(arg);
 
-        int nTimeCost = 0;
+        //最后运行的TimerID
+        int nLastRunTimerID = 0;
+        int nTimeCost       = 0;
 
         CTime_Value obj_Now = TS_TIMER::GetTimeofDay();
 
@@ -31,7 +33,7 @@ namespace TS_TIMER
                                     obj_Now,
                                     vecTimoutList);
 
-                pTimerInfoList->Get_Curr_Timer()->Do_Error_Events(obj_Time_Begin, vecTimoutList);
+                pTimerInfoList->Get_Curr_Timer()->Do_Error_Events(nLastRunTimerID, obj_Time_Begin, vecTimoutList);
 
                 //重新计算下一次到期时间
                 nInterval = pTimerInfoList->Get_Next_Timer(obj_Now, nTimeCost);
@@ -90,7 +92,8 @@ namespace TS_TIMER
             {
                 //执行定时器
                 CTime_Value obj_Begin = TS_TIMER::GetTimeofDay();
-                //printf("[thr_fn]sec=%d, usec=%d.\n", obj_Begin.Get_sec(), obj_Begin.Get_usec() / 1000);
+
+                nLastRunTimerID = pTimerInfoList->Get_Curr_Timer()->Get_Timer_ID();
 
                 if (NULL != pTimerInfoList->Get_Curr_Timer())
                 {

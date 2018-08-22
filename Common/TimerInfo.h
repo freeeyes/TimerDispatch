@@ -37,7 +37,7 @@ namespace TS_TIMER
 #define MAX_TIMER_LIST_COUNT 10
 
     typedef void(*Timeout_Callback)(int, CTime_Value&, void*, EM_Timer_State&);
-    typedef void(*Timeout_Error_Callback)(int, vector<CTime_Value>, void*);
+    typedef void(*Timeout_Error_Callback)(int, int, vector<CTime_Value>, void*);
 
     enum EM_Event_Type
     {
@@ -68,7 +68,7 @@ namespace TS_TIMER
 
         EM_Timer_State Do_Timer_Event(CTime_Value& obj_Now);
 
-        void Do_Error_Events(CTime_Value& obj_Next, vector<CTime_Value>& vecTimoutList);
+        void Do_Error_Events(int nLastRunTimerID, CTime_Value& obj_Next, vector<CTime_Value>& vecTimoutList);
 
     private:
         int m_nTimerID;                                  //当前唯一的Timer标识
