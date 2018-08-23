@@ -1,15 +1,15 @@
 #include <unistd.h>
 #include "TimerThread.h"
 
-void Do_Timer_Event(int nTimerID, TS_TIMER::CTime_Value& tvNow, void* pArg, TS_TIMER::EM_Timer_State& emState)
+void Do_Timer_Event(int nTimerID, ts_timer::CTime_Value& tvNow, void* pArg, ts_timer::EM_Timer_State& emState)
 {
     int* pData = (int*)pArg;
-    TS_TIMER::CTime_Value obj_Time_Value = TS_TIMER::GetTimeofDay();
+    ts_timer::CTime_Value obj_Time_Value = ts_timer::GetTimeofDay();
     printf("[Do_Timer_Event](%d)<%s>, Arg=%d.\n", nTimerID, obj_Time_Value.Get_string().c_str(), *pData);
 	usleep(500*1000);
 }
 
-void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, vector<TS_TIMER::CTime_Value> vecTimeout, void* pArg)
+void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, vector<ts_timer::CTime_Value> vecTimeout, void* pArg)
 {
     int* pData = (int*)pArg;
     int nCount = (int)vecTimeout.size();
@@ -18,9 +18,9 @@ void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, vector<TS_TIMER::CT
 
 int main()
 {
-    TS_TIMER::CTimerThread objTimerThread;
+    ts_timer::CTimerThread objTimerThread;
 
-    TS_TIMER::CTime_Value ttbegin = TS_TIMER::GetTimeofDay() - TS_TIMER::CTime_Value(5, 0);
+    ts_timer::CTime_Value ttbegin = ts_timer::GetTimeofDay() - ts_timer::CTime_Value(5, 0);
 
     int nID = 1001;
 

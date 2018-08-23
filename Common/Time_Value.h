@@ -5,12 +5,10 @@
 #include "time.h"
 #include <string>
 
-using namespace std;
-
 //Time Value数据类型
 //add by freeeyes
 
-namespace TS_TIMER
+namespace ts_timer
 {
     typedef long suseconds_t;                         //纳秒值
     suseconds_t const ONE_SECOND_IN_USECS = 1000000;  //一纳秒的时间

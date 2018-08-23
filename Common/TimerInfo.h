@@ -19,14 +19,10 @@
 #include <vector>
 #include "TimerCommon.h"
 
-using namespace std;
-
 //定时器相关对象声明
 //add by freeeyes
 
-
-
-namespace TS_TIMER
+namespace ts_timer
 {
     enum EM_Timer_State
     {
@@ -37,7 +33,7 @@ namespace TS_TIMER
 #define MAX_TIMER_LIST_COUNT 10
 
     typedef void(*Timeout_Callback)(int, CTime_Value&, void*, EM_Timer_State&);
-    typedef void(*Timeout_Error_Callback)(int, int, vector<CTime_Value>, void*);
+    typedef void(*Timeout_Error_Callback)(int, int, std::vector<CTime_Value>, void*);
 
     enum EM_Event_Type
     {
@@ -68,7 +64,7 @@ namespace TS_TIMER
 
         EM_Timer_State Do_Timer_Event(CTime_Value& obj_Now);
 
-        void Do_Error_Events(int nLastRunTimerID, CTime_Value& obj_Next, vector<CTime_Value>& vecTimoutList);
+        void Do_Error_Events(int nLastRunTimerID, CTime_Value& obj_Next, std::vector<CTime_Value>& vecTimoutList);
 
     private:
         int m_nTimerID;                                  //当前唯一的Timer标识
@@ -138,7 +134,7 @@ namespace TS_TIMER
         ITimerInfo* Get_Curr_Timer();
 
     private:
-        vector<ITimerInfo*> m_TimerList;      //当前定时器对象列表
+        std::vector<ITimerInfo*> m_TimerList;      //当前定时器对象列表
         int                 m_nMaxCount;      //当前定时器对象最大容量
         ITimerInfo*         m_NextRunTimer;   //下一次要运行的定时器对象
         bool                m_blRun;          //是否运行

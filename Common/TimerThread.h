@@ -3,7 +3,7 @@
 
 #include "TimerInfo.h"
 
-namespace TS_TIMER
+namespace ts_timer
 {
     class CTimerThread
     {

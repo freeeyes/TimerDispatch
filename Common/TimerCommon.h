@@ -11,7 +11,7 @@
 //timer的一些公用API函数
 //add by freeyes
 
-namespace TS_TIMER
+namespace ts_timer
 {
 #define MAX_TIMOUTLIST_COUNT 100
 
@@ -53,7 +53,7 @@ namespace TS_TIMER
     }
 
     //获得超时时间列表
-    inline void Get_Timout_TimeInfo(CTime_Value& ttBegin, int nFrequency, CTime_Value& ttNow, vector<CTime_Value>& vecTimoutList)
+    inline void Get_Timout_TimeInfo(CTime_Value& ttBegin, int nFrequency, CTime_Value& ttNow, std::vector<CTime_Value>& vecTimoutList)
     {
         int nSeconds  = nFrequency / 1000;
         int nUseconds = (nFrequency % 1000) * 1000;

@@ -4,14 +4,14 @@
 #include "TimerThread.h"
 #include "TimerCommon.h"
 
-void Do_Timer_Event(int nTimerID, TS_TIMER::CTime_Value& tvNow, void* pArg, TS_TIMER::EM_Timer_State& emState)
+void Do_Timer_Event(int nTimerID, ts_timer::CTime_Value& tvNow, void* pArg, ts_timer::EM_Timer_State& emState)
 {
     int* pData = (int*)pArg;
     printf_s("[Do_Timer_Event](%d)<%s>, Arg=%d.\n", nTimerID, tvNow.Get_string().c_str(), *pData);
     Sleep(500);
 }
 
-void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, vector<TS_TIMER::CTime_Value> vecTimeout, void* pArg)
+void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, std::vector<ts_timer::CTime_Value> vecTimeout, void* pArg)
 {
     int* pData = (int*)pArg;
     int nCount = (int)vecTimeout.size();
@@ -20,9 +20,9 @@ void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, vector<TS_TIMER::CT
 
 int main()
 {
-    TS_TIMER::CTimerThread objTimerThread;
+    ts_timer::CTimerThread objTimerThread;
 
-    TS_TIMER::CTime_Value ttbegin = TS_TIMER::GetTimeofDay() - TS_TIMER::CTime_Value(5, 0);
+    ts_timer::CTime_Value ttbegin = ts_timer::GetTimeofDay() - ts_timer::CTime_Value(5, 0);
 
     int nID = 1001;
 
