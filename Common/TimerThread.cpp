@@ -174,12 +174,12 @@ namespace TS_TIMER
     */
     bool CTimerThread::Add_Timer(int nTimerID, int nFrequency, CTime_Value* pttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext, Timeout_Error_Callback fn_Timeout_Error_Callback)
     {
-        ITimerInfo* pTimerInfo = new ITimerInfo();
-
         if (NULL == fn_Timeout_Callback)
         {
             return false;
         }
+
+        ITimerInfo* pTimerInfo = new ITimerInfo();
 
         if (NULL != pttBegin)
         {

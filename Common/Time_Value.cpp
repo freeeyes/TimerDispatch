@@ -60,7 +60,7 @@ namespace TS_TIMER
 #ifdef WIN32
             sprintf_s(szData, 50, "1970-01-01 00:00:00");
 #else
-            sprintf(szData, "1970-01-01 00:00:00");
+            snprintf(szData, "1970-01-01 00:00:00");
 #endif
         }
         else
