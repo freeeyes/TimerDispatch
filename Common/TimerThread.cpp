@@ -163,9 +163,23 @@ namespace TS_TIMER
         printf("[CTimerThread::Run]<%s> is Run.\n", ttNow.Get_string().c_str());
     }
 
+    /*
+    * Add_Timer函数，成功返回true
+    * nTimerID 定时任务ID
+    * nFrequency 时间间隔，单位是毫秒。
+    * pttBegin 定时器开始时间（第一次不执行）
+    * fn_Timeout_Callback 任务回调事件，不可为空
+    * pArgContext 任务到期执行的参数
+    * fn_Timeout_Error_Callback 定时器没按时执行的报错事件，可以为空
+    */
     bool CTimerThread::Add_Timer(int nTimerID, int nFrequency, CTime_Value* pttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext, Timeout_Error_Callback fn_Timeout_Error_Callback)
     {
         ITimerInfo* pTimerInfo = new ITimerInfo();
+
+        if (NULL == fn_Timeout_Callback)
+        {
+            return false;
+        }
 
         if (NULL != pttBegin)
         {
