@@ -37,7 +37,6 @@ int ts_timer::ITimerInfo::Get_Timer_Frequency()
 int ts_timer::ITimerInfo::Get_Next_Timer(CTime_Value ttNow)
 {
     CTime_Value ttInterval;
-    int nCurrFrequency = 0;
 
     if (m_ttLastRunTime.IsZero() == true && m_ttNextTime.IsZero() == true)
     {
@@ -52,10 +51,6 @@ int ts_timer::ITimerInfo::Get_Next_Timer(CTime_Value ttNow)
     {
         ttInterval = m_ttNextTime - ttNow;
         int nIntervalFrquency = ttInterval.Get_milliseconds();
-        //printf("[Get_Next_Timer]ID=%d, m_ttNextTime=<%s>,ttNow=<%s>.\n",
-        //       Get_Timer_ID(),
-        //       m_ttNextTime.Get_string().c_str(),
-        //       ttNow.Get_string().c_str());
         return nIntervalFrquency;
     }
     else
@@ -71,8 +66,6 @@ void ts_timer::ITimerInfo::Set_Next_Timer()
 
     //如有上一次运行时间
     m_ttNextTime = m_ttNextTime + CTime_Value(nSeconds, nUseconds);
-
-    //printf("[Set_Next_Timer]ID=%d,m_ttNextTime=<%s>.\n", Get_Timer_ID(), m_ttNextTime.Get_string().c_str());
 }
 
 void ts_timer::ITimerInfo::Set_Next_Time(CTime_Value ttNextTime)
@@ -304,7 +297,6 @@ int ts_timer::CTimerInfoList::Get_Next_Timer(CTime_Value& tvNow, int nFunctionCo
         }
     }
 
-    //printf("[CTimerInfoList::Get_Next_Timer]Get_Timer_ID=%d, nInterval=%d.\n", m_NextRunTimer->Get_Timer_ID(), nInterval);
     return nInterval;
 }
 

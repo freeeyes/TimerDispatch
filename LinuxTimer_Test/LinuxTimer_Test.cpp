@@ -4,8 +4,7 @@
 void Do_Timer_Event(int nTimerID, ts_timer::CTime_Value& tvNow, void* pArg, ts_timer::EM_Timer_State& emState)
 {
     int* pData = (int*)pArg;
-    ts_timer::CTime_Value obj_Time_Value = ts_timer::GetTimeofDay();
-    printf("[Do_Timer_Event](%d)<%s>, Arg=%d.\n", nTimerID, obj_Time_Value.Get_string().c_str(), *pData);
+    printf("[Do_Timer_Event](%d)<%s>, Arg=%d, emState=%d.\n", nTimerID, tvNow.Get_string().c_str(), *pData, emState);
 	usleep(500*1000);
 }
 

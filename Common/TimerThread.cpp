@@ -62,8 +62,6 @@ void* thr_fn(void* arg)
             outtime.tv_sec = abstime.tv_sec;
             outtime.tv_nsec = abstime.tv_usec * 1000;  //µ¥Î»ÊÇÄÉÃë
 
-            ts_timer::CTime_Value ttNow = ts_timer::GetTimeofDay();
-
             pthread_cond_timedwait(pTimerInfoList->Get_cond(),
                                    pTimerInfoList->Get_mutex(),
                                    &outtime);
