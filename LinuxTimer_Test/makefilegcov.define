@@ -1,0 +1,19 @@
+CC = g++
+AR = ar
+CFLAGS = -g -O2 -D__LINUX__ -fprofile-arcs -ftest-coverage
+INCLUDES = -I./ -I../ -I/usr/include  -I../Common 
+LIBS = -L/usr/lib -L/usr/lib64 -L/usr/local/lib64 -L/usr/local/lib -ldl -lpthread -lgcov
+# *****************************
+# ????
+# *****************************
+# Here are some rules for converting .cpp -> .o
+.SUFFIXES: .cpp .o
+.cpp.o:
+	@$(CC) -fPIC $(CFLAGS) ${INCLUDES} -c $*.cpp 
+	@echo '----- '$*.cpp' is compiled ok!'
+
+# Here are some rules for converting .c -> .o
+.SUFFIXES: .c .o
+.c.o:
+	@$(CC) -fPIC $(CFLAGS)  ${INCLUDES} -c $*.c 
+	@echo '----- '$*.c' is compiled ok!'
