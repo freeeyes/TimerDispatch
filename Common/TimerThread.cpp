@@ -56,14 +56,13 @@ void* thr_fn(void* arg)
             Interval.tv_sec = (int)(nInterval / 1000);
             Interval.tv_usec = (nInterval % 1000) * 1000;
 
-
             gettimeofday(&now, NULL);
             timeradd(&now, &Interval, &abstime);
 
             outtime.tv_sec = abstime.tv_sec;
             outtime.tv_nsec = abstime.tv_usec * 1000;  //µ¥Î»ÊÇÄÉÃë
 
-            CTime_Value ttNow = GetTimeofDay();
+            ts_timer::CTime_Value ttNow = ts_timer::GetTimeofDay();
 
             pthread_cond_timedwait(pTimerInfoList->Get_cond(),
                                    pTimerInfoList->Get_mutex(),
