@@ -13,10 +13,10 @@ env:
 script:
   - cd $TRAVIS_BUILD_DIR/LinuxTimer_Test
   - build-wrapper-linux-x86-64 --out-dir bw-output make -f makefile_gov
-  - gcov -r -o ./ ./*.cpp > /dev/null
-  - gcov -r -o ./ ../Common/*.cpp > /dev/null
   - ls 
   - ./LinuxTimer_Test
+  - gcov -r -o ./ ./*.cpp > /dev/null
+  - gcov -r -o ./ ../Common/*.cpp > /dev/null  
   - cd $TRAVIS_BUILD_DIR
   - sonar-scanner -X
   
