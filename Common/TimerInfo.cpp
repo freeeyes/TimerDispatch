@@ -115,6 +115,17 @@ pthread_mutex_t* ts_timer::CTimerInfoList::Get_mutex()
     return m_pMutex;
 }
 
+
+ts_timer::CTimerInfoList::CTimerInfoList() : m_nMaxCount(0), m_NextRunTimer(NULL), m_blRun(false), m_emEventType(TIMER_DO_EVENT), m_pCond(NULL), m_pMutex(NULL)
+{
+
+}
+
+ts_timer::CTimerInfoList::~CTimerInfoList()
+{
+
+}
+
 void ts_timer::CTimerInfoList::Set_Event_Type(EM_Event_Type emEventType)
 {
     m_emEventType = emEventType;

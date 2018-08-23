@@ -82,8 +82,8 @@ namespace ts_timer
     class CTimerInfoList
     {
     public:
-        CTimerInfoList() : m_nMaxCount(0), m_NextRunTimer(NULL), m_blRun(false), m_emEventType(TIMER_DO_EVENT), m_pCond(NULL), m_pMutex(NULL) {};
-        ~CTimerInfoList() {};
+        CTimerInfoList();
+        ~CTimerInfoList();
 
 #ifdef WIN32
         CRITICAL_SECTION* Get_mutex();

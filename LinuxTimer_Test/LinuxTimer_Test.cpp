@@ -5,7 +5,6 @@ void Do_Timer_Event(int nTimerID, ts_timer::CTime_Value& tvNow, void* pArg, ts_t
 {
     int* pData = (int*)pArg;
     printf("[Do_Timer_Event](%d)<%s>, Arg=%d, emState=%d.\n", nTimerID, tvNow.Get_string().c_str(), *pData, emState);
-	usleep(500*1000);
 }
 
 void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, std::vector<ts_timer::CTime_Value> vecTimeout, void* pArg)
@@ -30,7 +29,6 @@ int main()
     objTimerThread.Run();
 	
     sleep(10);
-	//getchar();
     return 0;
 }
 
