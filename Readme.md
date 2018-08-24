@@ -1,4 +1,5 @@
 [![Build Status](https://www.travis-ci.org/freeeyes/TimerDispatch.svg?branch=master)](https://www.travis-ci.org/freeeyes/TimerDispatch)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=TimerDispatch&metric=alert_status](https://sonarcloud.io/dashboard?id=TimerDispatch)
 
 # Timer
 > This is a timer that supports windows and Linux.  
