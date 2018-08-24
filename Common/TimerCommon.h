@@ -15,6 +15,12 @@ namespace ts_timer
 {
 #define MAX_TIMOUTLIST_COUNT 100
 
+#ifdef WIN32
+#define PIRNTF printf_s
+#else
+#define PIRNTF printf
+#endif
+
     inline CTime_Value GetTimeofDay()
     {
         CTime_Value obj_Time_Value;

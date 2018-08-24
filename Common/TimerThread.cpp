@@ -88,16 +88,18 @@ void* thr_fn(void* arg)
 
         }
 
-        if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_STOP
-            || pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE)
+        if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_STOP)
         {
             //关闭当前线程
-            Log().Get(logINFO) << "[thr_fn]sig Close.";
+            PIRNTF("[thr_fn]sig Close.\n");
             pTimerInfoList->Set_Run(false);
         }
-        else if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_MODIFY)
+        else if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_MODIFY
+                 || pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE
+                 || pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_RESTORE)
         {
             //重新计算下一次唤醒时间
+            obj_Now = ts_timer::GetTimeofDay();
             pTimerInfoList->UnLock();
             continue;
         }
