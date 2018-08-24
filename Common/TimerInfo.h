@@ -40,6 +40,8 @@ namespace ts_timer
         TIMER_STOP = 0,      //停止线程
         TIMER_MODIFY,        //有Timer变化了
         TIMER_DO_EVENT,      //执行Timer
+        TIMER_PAUSE,         //暂停定时器
+        TIMER_RESTORE,       //恢复暂停定时器
     };
 
     class ITimerInfo

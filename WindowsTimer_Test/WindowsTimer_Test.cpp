@@ -32,11 +32,13 @@ int main()
 
     objTimerThread.Run();
 
-    Sleep(2800);
+    Sleep(5000);
 
-    objTimerThread.Add_Timer(2, 1000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
+    objTimerThread.Pause();
 
-    Sleep(10000);
+    Sleep(5000);
+
+    objTimerThread.Restore();
 
     getchar();
     return 0;

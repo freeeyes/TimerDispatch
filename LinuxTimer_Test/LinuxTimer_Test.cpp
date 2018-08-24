@@ -28,7 +28,15 @@ int main()
 
     objTimerThread.Run();
 	
-    sleep(10);
+	sleep(5);
+	
+	objTimerThread.Pause();
+	
+	sleep(5);
+	
+	objTimerThread.Restore();
+	
+    sleep(5);
     return 0;
 }
 

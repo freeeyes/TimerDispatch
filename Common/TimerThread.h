@@ -17,9 +17,17 @@ namespace ts_timer
 
         void Run();
 
+        //添加定时器
         bool Add_Timer(int nTimerID, int nFrequency, CTime_Value* pttBegin, Timeout_Callback fn_Timeout_Callback, void* pArgContext, Timeout_Error_Callback fn_Timeout_Error_Callback);
 
+        //删除定时器
         bool Del_Timer(int nTimerID);
+
+        //暂停定时器
+        bool Pause();
+
+        //恢复暂停定时器
+        bool Restore();
 
     private:
         void Modify(EM_Event_Type emType);
