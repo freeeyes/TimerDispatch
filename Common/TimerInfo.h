@@ -135,6 +135,8 @@ namespace ts_timer
 
         ITimerInfo* Get_Curr_Timer();
 
+        int GetCurrTimerCount();
+
     private:
         std::vector<ITimerInfo*> m_TimerList;      //当前定时器对象列表
         int                 m_nMaxCount;      //当前定时器对象最大容量

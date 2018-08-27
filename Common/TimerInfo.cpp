@@ -315,3 +315,8 @@ ts_timer::ITimerInfo* ts_timer::CTimerInfoList::Get_Curr_Timer()
 {
     return m_NextRunTimer;
 }
+
+int ts_timer::CTimerInfoList::GetCurrTimerCount()
+{
+    return (int)m_TimerList.size();
+}

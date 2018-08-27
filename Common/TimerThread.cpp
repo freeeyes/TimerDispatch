@@ -44,7 +44,7 @@ void* thr_fn(void* arg)
 
         pTimerInfoList->Lock();
 
-        if (nInterval >= 0 && pTimerInfoList->Get_Event_Type() != ts_timer::TIMER_PAUSE)
+        if (nInterval >= 0 && pTimerInfoList->Get_Event_Type() != ts_timer::TIMER_PAUSE && pTimerInfoList->GetCurrTimerCount() > 0)
         {
 #ifdef WIN32
             SleepConditionVariableCS(reinterpret_cast<PCONDITION_VARIABLE>(pTimerInfoList->Get_cond()),
@@ -73,8 +73,8 @@ void* thr_fn(void* arg)
         }
         else
         {
-            //定时器执行异常，需要调用错误的过程
-            if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE)
+            //定时器暂停或者列表无数据
+            if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE || pTimerInfoList->GetCurrTimerCount() == 0)
             {
 #ifdef WIN32
                 SleepConditionVariableCS(reinterpret_cast<PCONDITION_VARIABLE>(pTimerInfoList->Get_cond()),
