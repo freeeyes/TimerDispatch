@@ -94,11 +94,11 @@ ts_timer::EM_Timer_State ts_timer::ITimerInfo::Do_Timer_Event(ts_timer::CTime_Va
     return emState;
 }
 
-void ts_timer::ITimerInfo::Do_Error_Events(int nLastRunTimerID, CTime_Value& obj_Next, std::vector<CTime_Value>& vecTimoutList)
+void ts_timer::ITimerInfo::Do_Error_Events(int nLastRunTimerID, int nTimeoutTime, CTime_Value& obj_Next, std::vector<CTime_Value>& vecTimoutList)
 {
     if (NULL != m_fn_Timeout_Error)
     {
-        m_fn_Timeout_Error(nLastRunTimerID, Get_Timer_ID(), vecTimoutList, m_pArgContext);
+        m_fn_Timeout_Error(nLastRunTimerID, nTimeoutTime, Get_Timer_ID(), vecTimoutList, m_pArgContext);
     }
 
     //设置下一次执行时间
@@ -276,7 +276,7 @@ bool ts_timer::CTimerInfoList::Del_Timer(int nTimerID)
     return false;
 }
 
-int ts_timer::CTimerInfoList::Get_Next_Timer(CTime_Value& tvNow, int nFunctionCost)
+int ts_timer::CTimerInfoList::Get_Next_Timer(CTime_Value& tvNow)
 {
     //计算出下一个需要运行的定时器最短到期时间
     int nInterval = 0;

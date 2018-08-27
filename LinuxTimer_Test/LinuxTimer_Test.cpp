@@ -7,11 +7,11 @@ void Do_Timer_Event(int nTimerID, ts_timer::CTime_Value& tvNow, void* pArg, ts_t
     PIRNTF("[Do_Timer_Event](%d)<%s>, Arg=%d, emState=%d.\n", nTimerID, tvNow.Get_string().c_str(), *pData, emState);
 }
 
-void Timeout_Error_Callback(int nErrorTimerID, int nTimerID, std::vector<ts_timer::CTime_Value> vecTimeout, void* pArg)
+void Timeout_Error_Callback(int nErrorTimerID, int nTimeout, int nTimerID, std::vector<ts_timer::CTime_Value> vecTimeout, void* pArg)
 {
     int* pData = (int*)pArg;
     int nCount = (int)vecTimeout.size();
-    PIRNTF("[Timeout_Error_Callback](nErrorTimerID=%d,nTimerID=%d)<%d>, Arg=%d.\n", nErrorTimerID, nTimerID, nCount, *pData);
+    PIRNTF("[Timeout_Error_Callback](nErrorTimerID=%d,nTimeout=%d)nTimerID=%d<%d>, Arg=%d.\n", nErrorTimerID, nTimeout, nTimerID, nCount, *pData);
 }
 
 int main()

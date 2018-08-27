@@ -23,7 +23,7 @@ void* thr_fn(void* arg)
         if (pTimerInfoList->Get_Event_Type() != ts_timer::TIMER_PAUSE)
         {
             //得到定时器下一个执行对象的差距时间
-            nInterval = pTimerInfoList->Get_Next_Timer(obj_Now, nTimeCost);
+            nInterval = pTimerInfoList->Get_Next_Timer(obj_Now);
 
             if (nInterval < 0)
             {
@@ -35,10 +35,10 @@ void* thr_fn(void* arg)
                                     obj_Now,
                                     vecTimoutList);
 
-                pTimerInfoList->Get_Curr_Timer()->Do_Error_Events(nLastRunTimerID, obj_Time_Begin, vecTimoutList);
+                pTimerInfoList->Get_Curr_Timer()->Do_Error_Events(nLastRunTimerID, nTimeCost, obj_Time_Begin, vecTimoutList);
 
                 //重新计算下一次到期时间
-                nInterval = pTimerInfoList->Get_Next_Timer(obj_Now, nTimeCost);
+                nInterval = pTimerInfoList->Get_Next_Timer(obj_Now);
             }
         }
 
