@@ -139,6 +139,14 @@ ts_timer::CTimerThread::CTimerThread()
 
 ts_timer::CTimerThread::~CTimerThread()
 {
+    //判断工作线程是否正在运行
+    if (m_TimerInfoList.Get_Run() == true)
+    {
+        Modify(TIMER_STOP);
+    }
+
+    Get_Sleep(10);
+
     m_TimerInfoList.Close();
 }
 

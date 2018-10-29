@@ -33,13 +33,13 @@ int main()
     Sleep(5000);
 
     //objTimerThread.Pause();
-    objTimerThread.Add_Timer(1, 1000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
+    //objTimerThread.Add_Timer(1, 1000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
 
-    Sleep(5000);
+    //Sleep(5000);
 
     //objTimerThread.Restore();
 
-    getchar();
+    //getchar();
     return 0;
 }
 
