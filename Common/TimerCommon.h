@@ -96,7 +96,11 @@ namespace ts_timer
 #ifdef WIN32
         Sleep(nTime);
 #else
-        nanosleep(nTime);
+        struct timespec rqt;
+        rqt.tv_sec = 0;
+        rqt.tv_nsec = (long)nTime * 1000 * 1000; //дицК
+
+        nanosleep(&rqt, NULL);
 #endif
     }
 };
