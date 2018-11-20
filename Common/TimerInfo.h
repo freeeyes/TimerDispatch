@@ -140,22 +140,22 @@ namespace ts_timer
         ITimerInfo* GetTimerInfo(int nIndex);                      //得到指定的Timer指针
 
     private:
-        std::vector<ITimerInfo*>  m_TimerList;      //当前定时器对象列表
-        vector<vector<_Lcm_Info>> m_TimerAssemble;  //执行定时器的计划镜像
-        int                       m_nCurrTimerIndex;//记录当前TimerID
-        int                       m_nMaxCount;      //当前定时器对象最大容量
-        ITimerInfo*               m_NextRunTimer;   //下一次要运行的定时器对象
-        bool                      m_blRun;          //是否运行
-        EM_Event_Type             m_emEventType;    //当前事件执行状态
+        std::vector<ITimerInfo*>   m_TimerList;      //当前定时器对象列表
+        vector<vector<_Lcm_Info> > m_TimerAssemble;  //执行定时器的计划镜像
+        int                        m_nCurrTimerIndex;//记录当前TimerID
+        int                        m_nMaxCount;      //当前定时器对象最大容量
+        ITimerInfo*                m_NextRunTimer;   //下一次要运行的定时器对象
+        bool                       m_blRun;          //是否运行
+        EM_Event_Type              m_emEventType;    //当前事件执行状态
 
 #ifdef WIN32
-        DWORD                     m_nThreadID;
-        CRITICAL_SECTION*         m_pMutex;
-        CONDITION_VARIABLE*       m_pCond;
+        DWORD                      m_nThreadID;
+        CRITICAL_SECTION*          m_pMutex;
+        CONDITION_VARIABLE*        m_pCond;
 #else
-        pthread_t                 m_nThreadID;
-        pthread_mutex_t*          m_pMutex;
-        pthread_cond_t*           m_pCond;
+        pthread_t                  m_nThreadID;
+        pthread_mutex_t*           m_pMutex;
+        pthread_cond_t*            m_pCond;
 #endif
     };
 }
