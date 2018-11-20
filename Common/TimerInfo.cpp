@@ -68,7 +68,7 @@ int ts_timer::ITimerInfo::Get_Next_Timer(CTime_Value ttNow, bool blState)
         {
             if (m_ttNextTime.Get_milliseconds() < ttNow.Get_milliseconds())
             {
-                m_ttNextTime = m_ttBeginTime + CTime_Value(nSeconds, nUseconds);
+                m_ttNextTime = m_ttNextTime + CTime_Value(nSeconds, nUseconds);
             }
             else
             {
