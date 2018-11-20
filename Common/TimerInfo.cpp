@@ -341,6 +341,11 @@ void ts_timer::CTimerInfoList::Calculation_Run_Assemble(CTime_Value obj_Now)
         {
             nIndex = i;
         }
+
+        int nSeconds = m_TimerAssemble[i][0].m_nTimeout / 1000;
+        int nUseconds = (m_TimerAssemble[i][0].m_nTimeout % 1000) * 1000;
+
+        ttBeginTime = ttBeginTime + CTime_Value(nSeconds, nUseconds);
     }
 
     //计算起始位置
