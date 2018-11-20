@@ -109,7 +109,7 @@ static void Get_Min_Set(vector<_Lcm_Info>& vec_Lcm_Info_Temp, vector<_Lcm_Info>&
 }
 
 //计算最小集
-static int Get_Minimum_Set(vector<_Lcm_Info>& vec_Lcm_Info, int nLeastCommonMultiple, vector<vector<_Lcm_Info>>& vecList)
+static int Get_Minimum_Set(vector<_Lcm_Info>& vec_Lcm_Info, int nLeastCommonMultiple, vector<vector<_Lcm_Info> >& vecList)
 {
     int  nTotal    = 0;
     int  nMinSetp  = 0;
