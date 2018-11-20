@@ -22,7 +22,7 @@ struct _Lcm_Info
 
 static int gcd(int nA, int nB)
 {
-    if (nA < 1 || nA < 1)
+    if (nA < 1)
     {
         return 0;
     }
@@ -42,12 +42,14 @@ static int gcd(int nA, int nB)
 
 static int lcm(int nA, int nB)
 {
-    if (nA == 0 || nB == 0)
+    if (nA == 0 || nB == 0 || gcd(nA, nB) == 0)
     {
         return 0;
     }
-
-    return (nA * nB) / gcd(nA, nB);
+    else
+    {
+        return (nA * nB) / gcd(nA, nB);
+    }
 }
 
 //计算最大公倍数
