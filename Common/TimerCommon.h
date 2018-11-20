@@ -1,6 +1,7 @@
 #ifndef _TIMER_COMMON_H
 #define _TIMER_COMMON_H
 
+#include <vector>
 #include "Time_Value.h"
 #ifdef WIN32
 #include "windows.h"

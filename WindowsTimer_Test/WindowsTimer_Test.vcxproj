@@ -153,6 +153,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Common\Lcm.h" />
     <ClInclude Include="..\Common\TimerCommon.h" />
     <ClInclude Include="..\Common\TimerInfo.h" />
     <ClInclude Include="..\Common\TimerThread.h" />
