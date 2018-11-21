@@ -28,7 +28,7 @@ void* thr_fn(void* arg)
             {
                 //得到定时器下一个执行对象列表
                 obj_Now = ts_timer::GetTimeofDay();
-                vector<_Lcm_Info>* pList = pTimerInfoList->Get_Next_Assemble();
+                std::vector<_Lcm_Info>* pList = pTimerInfoList->Get_Next_Assemble();
 
                 if (NULL == pList)
                 {
@@ -53,7 +53,7 @@ void* thr_fn(void* arg)
                                             obj_Now,
                                             vecTimoutList);
 
-                        pTimerInfo->Do_Error_Events(nLastRunTimerID, nTimeCost, obj_Time_Begin, vecTimoutList);
+                        pTimerInfo->Do_Error_Events(nLastRunTimerID, nTimeCost, vecTimoutList);
 
                         //重新计算下一次到期时间
                         pTimerInfo->Get_Next_Timer(obj_Now, true);
@@ -98,6 +98,8 @@ void* thr_fn(void* arg)
         }
         else
         {
+            pTimerInfoList->UnLock();
+
             //定时器暂停或者列表无数据
             if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE || pTimerInfoList->GetCurrTimerCount() == 0)
             {
@@ -123,7 +125,6 @@ void* thr_fn(void* arg)
             pTimerInfoList->Set_Run(false);
         }
         else if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_MODIFY
-                 || pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE
                  || pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_RESTORE)
         {
             //重新计算下循环列表
@@ -132,9 +133,14 @@ void* thr_fn(void* arg)
             pTimerInfoList->UnLock();
             continue;
         }
+        else if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE)
+        {
+            //暂停
+            continue;
+        }
         else
         {
-            vector<_Lcm_Info>* pList = pTimerInfoList->Get_Curr_Assemble();
+            std::vector<_Lcm_Info>* pList = pTimerInfoList->Get_Curr_Assemble();
 
             for (int i = 0; i < pList->size(); i++)
             {

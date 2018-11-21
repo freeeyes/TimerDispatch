@@ -62,7 +62,7 @@ namespace ts_timer
 
         EM_Timer_State Do_Timer_Event(CTime_Value& obj_Now);
 
-        void Do_Error_Events(int nLastRunTimerID, int nTimeoutTime, CTime_Value& obj_Next, std::vector<CTime_Value>& vecTimoutList);
+        void Do_Error_Events(int nLastRunTimerID, int nTimeoutTime, std::vector<CTime_Value>& vecTimoutList);
 
     private:
         int m_nTimerID;                                  //当前唯一的Timer标识
@@ -127,26 +127,26 @@ namespace ts_timer
 
         bool Del_Timer(int nTimerID);
 
-        vector<_Lcm_Info>* Get_Curr_Timer();
+        std::vector<_Lcm_Info>* Get_Curr_Timer();
 
         void Calculation_Run_Assemble(CTime_Value obj_Now);        //计算定时器执行镜像集合
 
-        vector<_Lcm_Info>* Get_Curr_Assemble();                    //获得当前要执行的列表
+        std::vector<_Lcm_Info>* Get_Curr_Assemble();                    //获得当前要执行的列表
 
-        vector<_Lcm_Info>* Get_Next_Assemble();                    //获得下一个要执行的列表
+        std::vector<_Lcm_Info>* Get_Next_Assemble();                    //获得下一个要执行的列表
 
         int GetCurrTimerCount();                                   //得到当前定时器的Count
 
         ITimerInfo* GetTimerInfo(int nIndex);                      //得到指定的Timer指针
 
     private:
-        std::vector<ITimerInfo*>   m_TimerList;      //当前定时器对象列表
-        vector<vector<_Lcm_Info> > m_TimerAssemble;  //执行定时器的计划镜像
-        int                        m_nCurrTimerIndex;//记录当前TimerID
-        int                        m_nMaxCount;      //当前定时器对象最大容量
-        ITimerInfo*                m_NextRunTimer;   //下一次要运行的定时器对象
-        bool                       m_blRun;          //是否运行
-        EM_Event_Type              m_emEventType;    //当前事件执行状态
+        std::vector<ITimerInfo*>             m_TimerList;      //当前定时器对象列表
+        std::vector<std::vector<_Lcm_Info> > m_TimerAssemble;  //执行定时器的计划镜像
+        int                                  m_nCurrTimerIndex;//记录当前TimerID
+        int                                  m_nMaxCount;      //当前定时器对象最大容量
+        ITimerInfo*                          m_NextRunTimer;   //下一次要运行的定时器对象
+        bool                                 m_blRun;          //是否运行
+        EM_Event_Type                        m_emEventType;    //当前事件执行状态
 
 #ifdef WIN32
         DWORD                      m_nThreadID;

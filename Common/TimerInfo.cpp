@@ -104,7 +104,7 @@ ts_timer::EM_Timer_State ts_timer::ITimerInfo::Do_Timer_Event(ts_timer::CTime_Va
     return emState;
 }
 
-void ts_timer::ITimerInfo::Do_Error_Events(int nLastRunTimerID, int nTimeoutTime, CTime_Value& obj_Next, std::vector<CTime_Value>& vecTimoutList)
+void ts_timer::ITimerInfo::Do_Error_Events(int nLastRunTimerID, int nTimeoutTime, std::vector<CTime_Value>& vecTimoutList)
 {
     if (NULL != m_fn_Timeout_Error)
     {
@@ -123,7 +123,7 @@ pthread_mutex_t* ts_timer::CTimerInfoList::Get_mutex()
 }
 
 
-ts_timer::CTimerInfoList::CTimerInfoList() : m_nMaxCount(0), m_NextRunTimer(NULL), m_blRun(false), m_emEventType(TIMER_DO_EVENT), m_pCond(NULL), m_pMutex(NULL), m_nCurrTimerIndex(0)
+ts_timer::CTimerInfoList::CTimerInfoList() : m_nCurrTimerIndex(0), m_nMaxCount(0), m_NextRunTimer(NULL), m_blRun(false), m_emEventType(TIMER_DO_EVENT), m_pCond(NULL), m_pMutex(NULL)
 {
 }
 
