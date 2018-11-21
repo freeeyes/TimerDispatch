@@ -98,8 +98,6 @@ void* thr_fn(void* arg)
         }
         else
         {
-            pTimerInfoList->UnLock();
-
             //定时器暂停或者列表无数据
             if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE || pTimerInfoList->GetCurrTimerCount() == 0)
             {
