@@ -136,6 +136,7 @@ void* thr_fn(void* arg)
         else if (pTimerInfoList->Get_Event_Type() == ts_timer::TIMER_PAUSE)
         {
             //ÔÝÍ£
+            pTimerInfoList->UnLock();
             continue;
         }
         else
@@ -290,9 +291,11 @@ bool ts_timer::CTimerThread::Restore()
 
 void ts_timer::CTimerThread::Modify(EM_Event_Type emType)
 {
+    m_TimerInfoList.Lock();
+
     m_TimerInfoList.Set_Event_Type(emType);
 
-    m_TimerInfoList.Lock();
+    m_TimerInfoList.UnLock();
 
     if (NULL != m_TimerInfoList.Get_cond())
     {
@@ -302,6 +305,4 @@ void ts_timer::CTimerThread::Modify(EM_Event_Type emType)
         pthread_cond_signal(m_TimerInfoList.Get_cond());
 #endif
     }
-
-    m_TimerInfoList.UnLock();
 }
