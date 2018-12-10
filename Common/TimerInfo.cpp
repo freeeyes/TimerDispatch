@@ -252,7 +252,7 @@ bool ts_timer::CTimerInfoList::Add_Timer(ITimerInfo* pTimerInfo)
     {
         if ((*it)->Get_Timer_ID() == pTimerInfo->Get_Timer_ID())
         {
-            return true;
+            return false;
         }
     }
 
