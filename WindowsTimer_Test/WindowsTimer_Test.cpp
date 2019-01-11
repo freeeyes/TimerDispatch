@@ -33,9 +33,9 @@ int main()
     Sleep(1000);
 
     objTimerThread.Add_Timer(1, 2000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
-    objTimerThread.Add_Timer(2, 2000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
+    //objTimerThread.Add_Timer(2, 2000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
 
-    objTimerThread.Add_Timer(3, 3000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
+    //objTimerThread.Add_Timer(3, 3000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
     //objTimerThread.Add_Timer(4, 3000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
     //objTimerThread.Add_Timer(5, 3000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
 
