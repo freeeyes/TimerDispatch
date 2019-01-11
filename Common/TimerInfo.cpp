@@ -350,7 +350,6 @@ void ts_timer::CTimerInfoList::Calculation_Run_Assemble(CTime_Value obj_Now)
 
     //计算起始位置
     m_nCurrTimerIndex = nIndex;
-
 }
 
 std::vector<_Lcm_Info>* ts_timer::CTimerInfoList::Get_Curr_Assemble()
@@ -365,7 +364,7 @@ std::vector<_Lcm_Info>* ts_timer::CTimerInfoList::Get_Next_Assemble()
         return NULL;
     }
 
-    if (m_nCurrTimerIndex == GetCurrTimerCount() - 1)
+    if (m_nCurrTimerIndex == GetAssembleCount() - 1)
     {
         m_nCurrTimerIndex = 0;
     }
@@ -374,12 +373,18 @@ std::vector<_Lcm_Info>* ts_timer::CTimerInfoList::Get_Next_Assemble()
         m_nCurrTimerIndex++;
     }
 
-    return &m_TimerAssemble[m_nCurrTimerIndex];
+    std::vector<_Lcm_Info>* pLcm = &m_TimerAssemble[m_nCurrTimerIndex];
+    return pLcm;
 }
 
 int ts_timer::CTimerInfoList::GetCurrTimerCount()
 {
     return (int)m_TimerList.size();
+}
+
+int ts_timer::CTimerInfoList::GetAssembleCount()
+{
+    return (int)m_TimerAssemble.size();
 }
 
 ts_timer::ITimerInfo* ts_timer::CTimerInfoList::GetTimerInfo(int nIndex)

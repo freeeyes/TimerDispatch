@@ -8,7 +8,7 @@ void Do_Timer_Event(int nTimerID, ts_timer::CTime_Value& tvNow, void* pArg, ts_t
 {
     int* pData = (int*)pArg;
     PIRNTF("[Do_Timer_Event](%d)<%s>, Arg=%d.\n", nTimerID, tvNow.Get_string().c_str(), *pData);
-    Sleep(500);
+    //Sleep(500);
 }
 
 void Timeout_Error_Callback(int nErrorTimerID, int nTimeout, int nTimerID, std::vector<ts_timer::CTime_Value> vecTimeout, void* pArg)
@@ -32,15 +32,19 @@ int main()
 
     Sleep(1000);
 
-    objTimerThread.Add_Timer(1, 1000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
+    objTimerThread.Add_Timer(1, 2000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
+    objTimerThread.Add_Timer(2, 2000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
 
-    objTimerThread.Pause();
+    objTimerThread.Add_Timer(3, 3000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
+    //objTimerThread.Add_Timer(4, 3000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
+    //objTimerThread.Add_Timer(5, 3000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
 
-    Sleep(5000);
+    //objTimerThread.Pause();
+
+    //Sleep(5000);
 
     objTimerThread.Restore();
 
-    objTimerThread.Add_Timer(2, 2000, NULL, Do_Timer_Event, (void*)&nID, Timeout_Error_Callback);
 
     getchar();
     return 0;
