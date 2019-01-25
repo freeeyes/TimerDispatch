@@ -129,7 +129,17 @@ ts_timer::CTimerInfoList::CTimerInfoList() : m_nCurrTimerIndex(0), m_nMaxCount(0
 
 ts_timer::CTimerInfoList::~CTimerInfoList()
 {
+    if (NULL != m_pMutex)
+    {
+        delete m_pMutex;
+        m_pMutex = NULL;
+    }
 
+    if (NULL != m_pCond)
+    {
+        delete m_pCond;
+        m_pCond = NULL;
+    }
 }
 
 void ts_timer::CTimerInfoList::Set_Event_Type(EM_Event_Type emEventType)
